@@ -4,7 +4,7 @@ Social media analytics is an extremely popular topic as businesses, governments,
 
 ## README Sections
 
-1. [Introduction & Scope](#introduction-&-scope)
+1. [Introduction & Scope](#introduction--scope)
 2. Prerequisites
     1. Twitter Developer Account
     2. News API
