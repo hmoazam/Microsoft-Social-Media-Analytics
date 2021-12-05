@@ -4,26 +4,60 @@ Social media analytics is an extremely popular topic as businesses, governments,
 
 ## README Sections
 
-1. PoC Implementation Scope
+1. [Introduction & Scope](#introduction-&-scope)
 2. Prerequisites
     1. Twitter Developer Account
     2. News API
     3. Azure Resource Group
     4. Azure Resource Providers
 3. Solution Architecture
-4. Deploying Azure Resources
+4. Deploying Azure Services
     1. Synapse Analytics
     2. Cosmos DB
     3. Translator
     4. Text Analytics
     5. Azure Maps
     6. Storage Account
-5. Configuring the Solution
-6. Visualizing - Power BI
-7. FAQs
-8. Known Issues
-9. Guidelines for extending the solution
+5. Configuring the Solution (subsections todo)
+6. Running the Solution
+7. Visualizing with Power BI
+    1. Dashboard template
+    2. Publishing
+8. [Cost Estimates](#cost-estimates)
+9. Recommendations for Extending the Solution
+    1. Streaming architecture
+    2. Additional data sources
+    3. Analysing images/audio
+10. FAQs
+11. Known Issues
+12. Contact Us
 
+## Introduction & Scope
 
+There are a plethora of social media platforms, however this implementation connects to and analyzes data from two sources: 
+- Twitter
+- News Articles
 
+However, the solution architecture and data models are such that they can be used or easily modified to include data from additional sources which you may wish to incorporate into the solution.
 
+As this implementation is for a PoC, the implementation ingests Twitter data in bulk, which ensures we can gather a large amount of data in a short time to create a representative dashboard. However, many production implementations will require a near-real-time implementation, for which a streaming approach is more suitable. This is described in more detail in 
+
+## Prerequisites
+
+## Solution Architecture
+
+## Deploying Azure Services
+
+## Configuring the Solution
+
+## Running the Solution
+
+## Visualizing with Power BI
+
+## Cost Estimates
+
+## Recommendations for Extending the Solution
+
+## FAQs
+
+## Known Issues
