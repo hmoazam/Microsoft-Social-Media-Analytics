@@ -158,9 +158,7 @@ The result of this step should look like the following:
   Tables, schemas, stored procedures and table data   Notebooks, pipelines and triggers, ready for customization
   deployed to SQL Pool                                
   --------------------------------------------------- ------------------------------------------------------------
-  ![Graphical user interface Description              ![Graphical user interface, application Description
-  automatically generated with medium                 automatically
-  confidence](./media/image8.png)
+  ![automatically confidence](./media/image8.png)
 
   ----------------------------------------------------------------------------------------------------------------
 
