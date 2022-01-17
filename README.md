@@ -123,8 +123,7 @@ place before running the deployment:
 
             ![Graphical user interface, application Description
             automatically
-            generated](./media/image5.045DA7F0){width="2.5416666666666665in"
-            height="2.3229166666666665in"}
+            generated](./media/image5.045DA7F0)
 
             First, start with executing the ***Deploy_SMA.bat***, which
             provisions all the Azure resources, and configures Key Vault
@@ -134,15 +133,13 @@ place before running the deployment:
 
             ![Graphical user interface, text, application, email
             Description automatically
-            generated](./media/image6.png){width="3.652244094488189in"
-            height="2.2395833333333335in"}
+            generated](./media/image6.png)
 
             Also, the Key Vault resource will have all the secrets
             configured automatically:
 
             ![Graphical user interface Description automatically
-            generated](./media/image7.16CB8360){width="4.333333333333333in"
-            height="4.21875in"}
+            generated](./media/image7.16CB8360)
 
             Then, execute the configure part of the automation by
             running ***PostDeploy_SMA.bat***, which is a wrapper that
