@@ -143,9 +143,6 @@ place before running the deployment:
             running ***PostDeploy_SMA.bat***, which is a wrapper that
             performs the following:
 
-```{=html}
-<!-- -->
-```
 -   It creates the Python notebooks in Synapse workspace
 
 -   It deploys the database tables, views and stored procedures in the
