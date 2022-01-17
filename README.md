@@ -158,7 +158,7 @@ The result of this step should look like the following:
   deployed to SQL Pool                                
   --------------------------------------------------- ------------------------------------------------------------
   ![automatically confidence](./media/image8.png)
-
+  ![automatically confidence2](./media/image9.png)
   ----------------------------------------------------------------------------------------------------------------
 
 # Customization
