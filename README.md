@@ -1,4 +1,3 @@
-![](./media/image1.png) 
 # Social Media Analytics Accelerator 
 
 # Introduction
