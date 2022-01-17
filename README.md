@@ -169,8 +169,7 @@ The result of this step should look like the following:
   --------------------------------------------------- ------------------------------------------------------------
   ![Graphical user interface Description              ![Graphical user interface, application Description
   automatically generated with medium                 automatically
-  confidence](./media/image8.png){width="1.96875in"   generated](./media/image9.png){width="5.864583333333333in"
-  height="5.09375in"}                                 height="1.6227854330708662in"}
+  confidence](./media/image8.png)
 
   ----------------------------------------------------------------------------------------------------------------
 
