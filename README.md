@@ -51,8 +51,7 @@ below. The accelerator uses the following components:
 -   Power BI: a template is available to view the insights in multiple
     report pages
 
-![Graphical user interface, application, Word, Teams Description
-automatically generated](./media/image4.png)
+(./media/image4.png)
 
 # Deployment
 
