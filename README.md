@@ -1,8 +1,5 @@
-![](./media/image1.png){width="9.895833333333334in"
-height="4.259027777777778in"}
-
-
-Deployment Guide
+![](./media/image1.png) 
+# Social Media Analytics Accelerator 
 
 # Introduction
 
@@ -53,9 +50,7 @@ below. The accelerator uses the following components:
 -   Power BI: a template is available to view the insights in multiple
     report pages
 
-![Graphical user interface, application, Word, Teams Description
-automatically generated](./media/image4.png){width="6.5in"
-height="2.1069444444444443in"}
+![auto generated](./media/image4.png)
 
 # Deployment
 
@@ -126,8 +121,7 @@ place before running the deployment:
 
             ![Graphical user interface, application Description
             automatically
-            generated](./media/image5.045DA7F0){width="2.5416666666666665in"
-            height="2.3229166666666665in"}
+            generated](./media/image5.045DA7F0)
 
             First, start with executing the ***Deploy_SMA.bat***, which
             provisions all the Azure resources, and configures Key Vault
@@ -137,23 +131,17 @@ place before running the deployment:
 
             ![Graphical user interface, text, application, email
             Description automatically
-            generated](./media/image6.png){width="3.652244094488189in"
-            height="2.2395833333333335in"}
+            generated](./media/image6.png)
 
             Also, the Key Vault resource will have all the secrets
             configured automatically:
 
-            ![Graphical user interface Description automatically
-            generated](./media/image7.16CB8360){width="4.333333333333333in"
-            height="4.21875in"}
+            ![](./media/image7.16CB8360)
 
             Then, execute the configure part of the automation by
             running ***PostDeploy_SMA.bat***, which is a wrapper that
             performs the following:
 
-```{=html}
-<!-- -->
-```
 -   It creates the Python notebooks in Synapse workspace
 
 -   It deploys the database tables, views and stored procedures in the
@@ -170,10 +158,7 @@ The result of this step should look like the following:
   Tables, schemas, stored procedures and table data   Notebooks, pipelines and triggers, ready for customization
   deployed to SQL Pool                                
   --------------------------------------------------- ------------------------------------------------------------
-  ![Graphical user interface Description              ![Graphical user interface, application Description
-  automatically generated with medium                 automatically
-  confidence](./media/image8.png){width="1.96875in"   generated](./media/image9.png){width="5.864583333333333in"
-  height="5.09375in"}                                 height="1.6227854330708662in"}
+  ![automatically confidence](./media/image8.png)
 
   ----------------------------------------------------------------------------------------------------------------
 
@@ -201,8 +186,7 @@ are required to the rest of the activities (starting from the Cleanup
 activity).
 
 ![Graphical user interface, table Description automatically
-generated](./media/image10.png){width="5.053681102362205in"
-height="3.8582906824146983in"}
+generated](./media/image10.png)
 
 **Tweets Pipeline**
 
@@ -219,8 +203,7 @@ to the pipeline workflow. No changes are required to the rest of the
 activities (starting from the Cleanup activity).
 
 ![Graphical user interface, table Description automatically
-generated](./media/image11.png){width="6.5in"
-height="4.914583333333334in"}
+generated](./media/image11.png)
 
 **Pipeline Triggers**
 
@@ -229,8 +212,7 @@ simply enabling the triggers
 
 ![Graphical user interface, application, table, Excel Description
 automatically
-generated](./media/image12.png){width="6.710091863517061in"
-height="1.7683628608923885in"}
+generated](./media/image12.png)
 
 # Power BI Template
 
@@ -246,23 +228,19 @@ are screenshots of the dashboard.
 **Executive Dashboard**
 
 ![Chart Description automatically
-generated](./media/image13.png){width="5.945980971128609in"
-height="3.3350863954505687in"}
+generated](./media/image13.png)
 
-**\
-**
+
 
 **Twitter Analysis**
 
 ![Graphical user interface, timeline Description automatically
-generated](./media/image14.png){width="6.448064304461942in"
-height="3.6194575678040244in"}
+generated](./media/image14.png)
 
 **News Article Analysis**
 
 ![Graphical user interface, timeline Description automatically
-generated](./media/image15.png){width="6.5in"
-height="3.6215277777777777in"}
+generated](./media/image15.png)
 
 # Solution Extension
 
@@ -303,5 +281,4 @@ achieved by adding an Azure Analysis Services tabular model layer.
 An example extension of the architecture is shown below:
 
 ![Graphical user interface, diagram, application Description
-automatically generated](./media/image16.png){width="6.5in"
-height="2.3125in"}
+automatically generated](./media/image16.png)
