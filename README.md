@@ -1,6 +1,5 @@
-![](./media/image1.png)
-
-Deployment Guide
+![](./media/image1.png) 
+# Social Media Analytics Accelerator 
 
 # Introduction
 
