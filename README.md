@@ -51,7 +51,7 @@ below. The accelerator uses the following components:
 -   Power BI: a template is available to view the insights in multiple
     report pages
 
-(./media/image4.png)
+![auto generated](./media/image4.png)
 
 # Deployment
 
@@ -237,8 +237,7 @@ are screenshots of the dashboard.
 ![Chart Description automatically
 generated](./media/image13.png)
 
-**\
-**
+
 
 **Twitter Analysis**
 
