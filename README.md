@@ -1,6 +1,4 @@
-![](./media/image1.png){width="9.895833333333334in"
-height="4.259027777777778in"}
-
+![](./media/image1.png)
 
 Deployment Guide
 
@@ -54,8 +52,7 @@ below. The accelerator uses the following components:
     report pages
 
 ![Graphical user interface, application, Word, Teams Description
-automatically generated](./media/image4.png){width="6.5in"
-height="2.1069444444444443in"}
+automatically generated](./media/image4.png)
 
 # Deployment
 
@@ -201,8 +198,7 @@ are required to the rest of the activities (starting from the Cleanup
 activity).
 
 ![Graphical user interface, table Description automatically
-generated](./media/image10.png){width="5.053681102362205in"
-height="3.8582906824146983in"}
+generated](./media/image10.png)
 
 **Tweets Pipeline**
 
@@ -219,8 +215,7 @@ to the pipeline workflow. No changes are required to the rest of the
 activities (starting from the Cleanup activity).
 
 ![Graphical user interface, table Description automatically
-generated](./media/image11.png){width="6.5in"
-height="4.914583333333334in"}
+generated](./media/image11.png)
 
 **Pipeline Triggers**
 
@@ -229,8 +224,7 @@ simply enabling the triggers
 
 ![Graphical user interface, application, table, Excel Description
 automatically
-generated](./media/image12.png){width="6.710091863517061in"
-height="1.7683628608923885in"}
+generated](./media/image12.png)
 
 # Power BI Template
 
@@ -246,8 +240,7 @@ are screenshots of the dashboard.
 **Executive Dashboard**
 
 ![Chart Description automatically
-generated](./media/image13.png){width="5.945980971128609in"
-height="3.3350863954505687in"}
+generated](./media/image13.png)
 
 **\
 **
@@ -255,14 +248,12 @@ height="3.3350863954505687in"}
 **Twitter Analysis**
 
 ![Graphical user interface, timeline Description automatically
-generated](./media/image14.png){width="6.448064304461942in"
-height="3.6194575678040244in"}
+generated](./media/image14.png)
 
 **News Article Analysis**
 
 ![Graphical user interface, timeline Description automatically
-generated](./media/image15.png){width="6.5in"
-height="3.6215277777777777in"}
+generated](./media/image15.png)
 
 # Solution Extension
 
@@ -303,5 +294,4 @@ achieved by adding an Azure Analysis Services tabular model layer.
 An example extension of the architecture is shown below:
 
 ![Graphical user interface, diagram, application Description
-automatically generated](./media/image16.png){width="6.5in"
-height="2.3125in"}
+automatically generated](./media/image16.png)
