@@ -136,8 +136,7 @@ place before running the deployment:
             Also, the Key Vault resource will have all the secrets
             configured automatically:
 
-            ![Graphical user interface Description automatically
-            generated](./media/image7.16CB8360)
+            ![](./media/image7.16CB8360)
 
             Then, execute the configure part of the automation by
             running ***PostDeploy_SMA.bat***, which is a wrapper that
