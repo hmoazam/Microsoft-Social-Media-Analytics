@@ -88,8 +88,10 @@ place before running the deployment:
         -   ***keyVaultAdministratorUserId***: the ID of the user
             account that will manage the secrets and passwords in Key
             Vault. Typically, it will be the ID of the user deploying
-            the solution. It can be retrieved using the command: *az ad
-            signed-in-user show \| findstr objectId*
+            the solution. It can be retrieved using:
+            -   Azure CLI: *az ad signed-in-user show \| findstr objectId*
+            -   Azure Cloud Shell: *az ad signed-in-user show \| grep objectId*
+            -   Azure Portal (Azure Active Directory blade)
 
         -   ***company***: 3 letters identifying the organization, for
             example: *fbk*
