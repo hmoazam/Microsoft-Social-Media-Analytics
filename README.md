@@ -59,9 +59,9 @@ place before running the deployment:
 
 -   A machine with [Azure
     CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-    installed
+    installed - 2.31 or later
 
--   A dedicated resource group for SMA must be created prior to the
+-   A dedicated resource group for the Social Media Analytics solution must be created prior to the
     deployment
 
 -   The deployment must be run using an account with the following
@@ -77,7 +77,7 @@ place before running the deployment:
         *SMAv2Template.parameters.json*
 
         -   ***location***: the Azure location for the deployment, for
-            example: *westeurope*
+            example: *westeurope* or *eastus*. Certain locations cannot be used because of the availability of certain services required by the solution (ex: *westus*)
 
         -   ***subscriptionId***: the ID of the subscription where the
             solution will be deployed
