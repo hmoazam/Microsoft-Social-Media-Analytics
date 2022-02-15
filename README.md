@@ -224,7 +224,7 @@ opened, it prompts for the data source which should be the Synapse
 workspace Sql endpoint. The report uses Import mode and displays 1 month
 of history. When publishing the report in powerbi.com, *Scheduled
 refresh* has to be configured to update the data in the dashboard. Below
-are screenshots of the dashboard.
+are screenshots of the dashboard. When opening the report using Power BI Desktop, make sure to activate the *Azure Map visual* in the Preview Features of Power BI Desktop options.
 
 **Executive Dashboard**
 
