@@ -73,75 +73,75 @@ place before running the deployment:
     -   has owner permission on the resource group where SMA is
         deployed, and has the rights to add role assignments
 
-    -   Fill the parameter values for in the file
+-   Fill the parameter values for in the file
         *SMAv2Template.parameters.json*
 
-        -   ***location***: the Azure location for the deployment, for
-            example: *westeurope* or *eastus*. Certain locations cannot be used because of the availability of certain services required by the solution (ex: *westus*)
+    -   ***location***: the Azure location for the deployment, for
+        example: *westeurope* or *eastus*. Certain locations cannot be used because of the availability of certain services required by the solution (ex: *westus*)
 
-        -   ***subscriptionId***: the ID of the subscription where the
-            solution will be deployed
+    -   ***subscriptionId***: the ID of the subscription where the
+        solution will be deployed
 
-        -   ***ResourceGroup***: The name of the resource group where
-            the solution will be deployed
+    -   ***ResourceGroup***: The name of the resource group where
+        the solution will be deployed
 
-        -   ***keyVaultAdministratorUserId***: the ID of the user
-            account that will manage the secrets and passwords in Key
-            Vault. Typically, it will be the ID of the user deploying
-            the solution. It can be retrieved using:
-            -   Azure CLI: *az ad signed-in-user show \| findstr objectId*
-            -   Azure Cloud Shell: *az ad signed-in-user show \| grep objectId*
-            -   Azure Portal (Azure Active Directory blade)
+    -   ***keyVaultAdministratorUserId***: the ID of the user
+        account that will manage the secrets and passwords in Key
+        Vault. Typically, it will be the ID of the user deploying
+        the solution. It can be retrieved using:
+        -   Azure CLI: *az ad signed-in-user show \| findstr objectId*
+        -   Azure Cloud Shell: *az ad signed-in-user show \| grep objectId*
+        -   Azure Portal (Azure Active Directory blade)
 
-        -   ***company***: 3 letters identifying the organization, for
-            example: *fbk*
+    -   ***company***: 3 letters identifying the organization, for
+        example: *fbk*
 
-        -   ***deploymentType***: poc, devtest, or prod
+    -   ***deploymentType***: poc, devtest, or prod
 
-        -   ***myPublicIPAddress***: the public IP address of the
-            machine running the deployment. This IP will be allowed
-            through Synapse firewall to later create and populate tables
-            in the SQL pool
+    -   ***myPublicIPAddress***: the public IP address of the
+        machine running the deployment. This IP will be allowed
+        through Synapse firewall to later create and populate tables
+        in the SQL pool
 
-        -   ***sparkNodeSize***: medium
+    -   ***sparkNodeSize***: medium
 
-        -   ***sqlAdministratorLogin***: SQL pool administrator
+    -   ***sqlAdministratorLogin***: SQL pool administrator
 
-        -   ***sqlAdministratorLoginPassword***: SQL pool administrator
-            password
+    -   ***sqlAdministratorLoginPassword***: SQL pool administrator
+        password
 
-        -   ***SynapseSku***: DW300C
+    -   ***SynapseSku***: DW300C
 
-        -   ***News API Key***: can be obtained in newsapi.org
+    -   ***News API Key***: can be obtained in newsapi.org
 
-        -   ***Twitter Keys***: can be obtained in Twitter developer
-            website
+    -   ***Twitter Keys***: can be obtained in Twitter developer
+        website
 
-            Once the requirements are in place, the **deployment
-            scripts** can be used to deploy and configure the solution.
+        Once the requirements are in place, the **deployment
+        scripts** can be used to deploy and configure the solution.
 
-            ![Graphical user interface, application Description
-            automatically
-            generated](./media/image5.045DA7F0)
+        ![Graphical user interface, application Description
+        automatically
+        generated](./media/image5.045DA7F0)
 
-            First, start with executing the ***Deploy_SMA.bat***, which
-            provisions all the Azure resources, and configures Key Vault
-            with all the secrets and keys of the provisioned services.
-            After completion, the resources in the resource group should
-            look like the below:
+        First, start with executing the ***Deploy_SMA.bat***, which
+        provisions all the Azure resources, and configures Key Vault
+        with all the secrets and keys of the provisioned services.
+        After completion, the resources in the resource group should
+        look like the below:
 
-            ![Graphical user interface, text, application, email
-            Description automatically
-            generated](./media/image6.png)
+        ![Graphical user interface, text, application, email
+        Description automatically
+        generated](./media/image6.png)
 
-            Also, the Key Vault resource will have all the secrets
-            configured automatically:
+        Also, the Key Vault resource will have all the secrets
+        configured automatically:
 
-            ![](./media/image7.16CB8360)
+        ![](./media/image7.16CB8360)
 
-            Then, execute the configure part of the automation by
-            running ***PostDeploy_SMA.bat***, which is a wrapper that
-            performs the following:
+        Then, execute the configure part of the automation by
+        running ***PostDeploy_SMA.bat***, which is a wrapper that
+        performs the following:
 
 -   It creates the Python notebooks in Synapse workspace
 
