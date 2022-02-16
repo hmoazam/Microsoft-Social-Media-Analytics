@@ -117,12 +117,9 @@ place before running the deployment:
     -   ***Twitter Keys***: can be obtained in Twitter developer
         website
 -   Azure Cogntive Services require to accept the terms and conditions of Responsible AI when they are first provisioned in an Azure subscription. If none of the Cognitive Services were  provisioned previously in the Azure subscription, it is necessary to create a temporary cognitive service (for example text analytics) to accept the AI license terms. The service can be dropped after the creation.
--   Once the requirements are in place, the **deployment
-        scripts** can be used to deploy and configure the solution.
+-   Once the requirements are in place, the **deployment scripts** can be used to deploy and configure the solution.
 
-        ![Graphical user interface, application Description
-        automatically
-        generated](./media/image5.045DA7F0)
+        [](./media/image5.045DA7F0)
 
         First, start with executing the ***Deploy_SMA.bat***, which
         provisions all the Azure resources, and configures Key Vault
