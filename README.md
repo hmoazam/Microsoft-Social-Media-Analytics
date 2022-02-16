@@ -121,11 +121,7 @@ place before running the deployment:
 
 ![auto generated](./media/image5.045DA7F0)
 
-    -   First, start with executing the ***Deploy_SMA.bat***, which
-        provisions all the Azure resources, and configures Key Vault
-        with all the secrets and keys of the provisioned services.
-        After completion, the resources in the resource group should
-        look like the below:
+-   First, start with executing the ***Deploy_SMA.bat***, which provisions all the Azure resources, and configures Key Vault with all the secrets and keys of the provisioned services. After completion, the resources in the resource group should look like the below:
 
 ![auto generated](./media/image6.png)
 
