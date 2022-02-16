@@ -125,24 +125,19 @@ place before running the deployment:
 
 ![auto generated](./media/image6.png)
 
-    -   Also, the Key Vault resource will have all the secrets
-        configured automatically:
+-   Also, the Key Vault resource will have all the secrets configured automatically:
 
 ![auto generated](./media/image7.16CB8360)
 
-    -   Then, execute the configure part of the automation by
-        running ***PostDeploy_SMA.bat***, which is a wrapper that
-        performs the following:
+-   Then, execute the configure part of the automation by running ***PostDeploy_SMA.bat***, which is a wrapper that performs the following:
 
--   It creates the Python notebooks in Synapse workspace
+    -   It creates the Python notebooks in Synapse workspace
 
--   It deploys the database tables, views and stored procedures in the
-    SQL Pool
+    -   It deploys the database tables, views and stored procedures in the SQL Pool
 
--   It configures the Spark Pool cluster with the required libraries
+    -   It configures the Spark Pool cluster with the required libraries
 
--   It creates the automation pipelines in Synapse Pipelines and the
-    scheduling triggers
+    -   It creates the automation pipelines in Synapse Pipelines and the scheduling triggers
 
 The result of this step should look like the following:
 
