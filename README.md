@@ -118,8 +118,8 @@ place before running the deployment:
         website
 -   Azure Cogntive Services require to accept the terms and conditions of Responsible AI when they are first provisioned in an Azure subscription. If none of the Cognitive Services were  provisioned previously in the Azure subscription, it is necessary to create a temporary cognitive service (for example text analytics) to accept the AI license terms. The service can be dropped after the creation.
 -   Once the requirements are in place, the **deployment scripts** can be used to deploy and configure the solution.
--   
-        ![auto generated](./media/image5.045DA7F0)
+
+![auto generated](./media/image5.045DA7F0)
 
         First, start with executing the ***Deploy_SMA.bat***, which
         provisions all the Azure resources, and configures Key Vault
@@ -127,12 +127,12 @@ place before running the deployment:
         After completion, the resources in the resource group should
         look like the below:
 
-        ![auto generated](./media/image6.png)
+![auto generated](./media/image6.png)
 
         Also, the Key Vault resource will have all the secrets
         configured automatically:
 
-        ![auto generated](./media/image7.16CB8360)
+![auto generated](./media/image7.16CB8360)
 
         Then, execute the configure part of the automation by
         running ***PostDeploy_SMA.bat***, which is a wrapper that
