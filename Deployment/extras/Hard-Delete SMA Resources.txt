@@ -1,0 +1,8 @@
+#This sample PowerShell code can be used to hard delete all SMA resources from a resource group, by specifying the following parameters
+#Requires AZ PowerShell module
+
+$RG="rg-SMA"
+$subscriptionID = "XXXXXXXXXXXXXXXX"
+$location = "westeurope"
+
+Get-AzResource -ResourceGroupName $RG | Remove-AzResource -Force; Get-AzKeyVault  -InRemovedState | ?{$_.resourceid -like "*$RG*"} | % {Remove-AzKeyVault -VaultName  $_.VaultName -InRemovedState -Force -Location $location};  Get-AzRoleAssignment -ResourceGroupName $RG | ?{$_.ObjectType -eq "ServicePrincipal" -and $_.DisplayName -like "" -and $_.Scope -eq "/subscriptions/$subscriptionID/resourcegroups/$RG"} | Remove-AzRoleAssignment;Get-AzCognitiveServicesAccount  -InRemovedState | ?{$_.id -like "*$RG*"} | % {Remove-AzCognitiveServicesAccount -AccountName  $_.AccountName -InRemovedState -Force -Location $location -ResourceGroupName $RG};
