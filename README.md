@@ -189,6 +189,10 @@ needed, the Notebook activity can be cloned to add the query and linked
 to the pipeline workflow. No changes are required to the rest of the
 activities (starting from the Cleanup activity).
 
+For details on constructing Twitter queries and the associated limits, refer to: 
+- https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
+- https://developer.twitter.com/en/docs/twitter-api/v1/rules-and-filtering/search-operators
+
 ![Graphical user interface, table Description automatically
 generated](./media/image11.png)
 
