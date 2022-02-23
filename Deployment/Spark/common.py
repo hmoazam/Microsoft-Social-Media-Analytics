@@ -90,7 +90,7 @@ def get_key_phrases(inp_text):
 def update_cosmos(objects, container): # insert tweets/users to cosmos
     for obj in objects:
         if obj:
-		     response = container.upsert_item(body=obj) # use upsert so that insert or update
+	    response = container.upsert_item(body=obj) # use upsert so that insert or update
     print("Inserted data to cosmos")
 
 
