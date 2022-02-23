@@ -1,12 +1,18 @@
-﻿$newstopic = "News"
-$news_query ="Ukraine"
+$newstopic = "Arab Cup"
+$news_query_ar ="كأس العرب"
+$news_query_en ="arab cup"
 
+$tweetstopic1 = "Qatar"
+$tweets_queries1 = "Qatar Arab Cup"
 
-$tweetstopic1 = "News"
-$tweets_queries1 = "Ukraine"
+$tweetstopic2 = "Tunisia"
+$tweets_queries2 = "Tunisia Arab Cup"
 
-$tweetstopic2 = "News"
-$tweets_queries2 = "Russia"
+$tweetstopic3 = "Algeria"
+$tweets_queries3 = "Algeria Arab Cup"
+
+$tweetstopic4 = "Egypt"
+$tweets_queries4 = "Egypt Arab Cup"
 
 
 ############# NEWS ARTICLES
@@ -36,19 +42,19 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "$news_query",
+                            "value": "$news_query_en",
                             "type": "string"
                         },
                         "topic": {
                             "value": "$newstopic",
                             "type": "string"
                         },
-                        "language": {
+                        "languages": {
                             "value": "English",
                             "type": "string"
                         },
                         "target_languages": {
-                            "value": "French,English",
+                            "value": "Arabic,English",
                             "type": "string"
                         }
                     },
@@ -101,7 +107,7 @@ $body = @"
                         ]
                     },
                     {
-                        "activity": "$newstopic FR",
+                        "activity": "$newstopic AR",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -151,7 +157,7 @@ $body = @"
                 }
             },
             {
-                "name": "$newstopic FR",
+                "name": "$newstopic AR",
                 "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
@@ -169,19 +175,19 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "$news_query",
+                            "value": "$news_query_ar",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "$newstopic",
+                            "value": "$sqlpoolName",
                             "type": "string"
                         },
-                        "language": {
-                            "value": "French",
+                        "languages": {
+                            "value": "Arabic",
                             "type": "string"
                         },
                         "target_languages": {
-                            "value": "French,English",
+                            "value": "Arabic,English",
                             "type": "string"
                         }
                     },
@@ -252,7 +258,7 @@ $body = @"
                             "type": "string"
                         },
                         "target_languages": {
-                            "value": "French,English",
+                            "value": "Arabic,English",
                             "type": "string"
                         }
                     },
@@ -298,7 +304,7 @@ $body = @"
                             "type": "string"
                         },
                         "target_languages": {
-                            "value": "French,English",
+                            "value": "Arabic,English",
                             "type": "string"
                         }
                     },
@@ -309,7 +315,99 @@ $body = @"
                     }
                 }
             },
-	    {
+            {
+                "name": "$tweetstopic3",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "$tweets_queries3",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "$tweetstopic3",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    }
+                }
+            },
+            {
+                "name": "$tweetstopic4",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "$tweets_queries4",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "$tweetstopic4",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    }
+                }
+            },
+            {
                 "name": "CosmosToSynapse-Tweets",
                 "type": "SynapseNotebook",
                 "dependsOn": [
@@ -379,6 +477,18 @@ $body = @"
                     },
                     {
                         "activity": "$tweetstopic2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "$tweetstopic3",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "$tweetstopic4",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
