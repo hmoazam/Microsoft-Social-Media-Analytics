@@ -24,6 +24,8 @@ $body =@"
       "libraryRequirements": {
                     "filename": "requirements.txt",
                     "content": "
+feedparser==6.0.8
+azure-core==1.22.1
 azure-cosmos==4.2
 tweepy==3.10.0
 azure-ai-textanalytics==5.1.0
