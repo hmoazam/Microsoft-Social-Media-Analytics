@@ -3,25 +3,25 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "northeurope"
     },
     "subscriptionId": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "d98ab4d3-79c0-48b9-bcbf-0bb8c797355a"
     },
     "ResourceGroup": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "rg-sma-test-march-003"
     },
     "keyVaultAdministratorUserId": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "be3ce2f4-a970-4e63-aa9f-acc5d6644dab"
     },
     "company": {
-      "value": "xxx"
+      "value": "abe"
     },
     "deploymentType": {
       "value": "prod"
     },
     "myPublicIPAddress": {
-      "value": "XX.XXX.XXX.XXX"
+      "value": "178.152.95.74"
     },
     "sparkNodeSize": {
       "value": "Medium"
@@ -31,25 +31,25 @@
       "value": "sqladmin"
     },
     "sqlAdministratorLoginPassword": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "sqlPasword0123[]"
     },
     "SynapseSku": {
       "value": "DW300c"
     },
     "NEWS_API_KEY": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "66fa526be1d04942b39454fcd59b68b7"
     },
     "TWITTER_API_KEY": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "Sm83rOifvxhXdQMFcxNFwVGxZ"
     },
     "TWITTER_API_SECRET_KEY": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "rzke2SJWjmaVqxNKUWgiLZJ29dWtybhMjOYQsckoJnOb0z2eFu"
     },
     "TWITTER_ACCESS_TOKEN": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "1084452974938726400-6axDVPyYQQWdPK58LQQJWarXs9ogY6"
     },
     "TWITTER_ACCESS_TOKEN_SECRET": {
-      "value": "XXXXXXXXXXXXXXXXX"
+      "value": "oB7AE8ROIKEnCOB0XI81BSD6yYXUr3uGoeWqOEfxKtG6q"
     }
   }
 }

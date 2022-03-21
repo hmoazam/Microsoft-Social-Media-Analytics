@@ -1,24 +1,22 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ### Pipeline Parameters
-
-# In[18]: Parameters
+# In[ ]: Parameters
 
 
-query = "Ukraine"
+query = ""
 # https://developer.twitter.com/en/docs/twitter-api/v1/rules-and-filtering/search-operators - query reference
 users = ""
-topic = "News"
+topic = ""
 subtopic = ""
 query_language = "All"
-target_languages = "English,French"
+target_languages = "English,Arabic"
 num_tweets = 100
 days = 7
 
 
+# In[ ]:
 
-# In[19]:
 
 LANGUAGE_CODES={"All":"","Afrikaans":"af","Arabic":"ar","Assamese":"as","Bangla":"bn","Bosnian(Latin)":"bs","Bulgarian":"bg","Cantonese(Traditional)":"yue","Catalan":"ca","Chinese Simplified":"zh-Hans","Chinese Traditional":"zh-Hant","Croatian":"hr","Czech":"cs","Dari":"prs","Danish":"da","Dutch":"nl","English":"en","Estonian":"et","Fijian":"fj","Filipino":"fil","Finnish":"fi","French":"fr","German":"de","Greek":"el","Gujarati":"gu","Haitian Creole":"ht","Hebrew":"he","Hindi":"hi","Hmong Daw":"mww","Hungarian":"hu","Icelandic":"is","Indonesian":"id","Irish":"ga","Italian":"it","Japanese":"ja","Kannada":"kn","Kazakh":"kk","Klingon":"tlh-Latn","Klingon(plqaD)":"tlh-Piqd","Korean":"ko","Kurdish(Central)":"ku","Kurdish(Northern)":"kmr","Latvian":"lv","Lithuanian":"lt","Malagasy":"mg","Malay":"ms","Malayalam":"ml","Maltese":"mt","Maori":"mi","Marathi":"mr","Norwegian":"nb","Odia":"or","Pashto":"ps","Persian":"fa","Polish":"pl","Portuguese(Brazil)":"pt-br","Portuguese(Portugal)":"pt-pt","Punjabi":"pa","Queretaro Otomi":"otq","Romanian":"ro","Russian":"ru","Samoan":"sm","Serbian(Cyrillic)":"sr-Cyrl","Serbian(Latin)":"sr-Latn","Slovak":"sk","Slovenian":"sl","Spanish":"es","Swahili":"sw","Swedish":"sv","Tahitian":"ty","Tamil":"ta","Telugu":"te","Thai":"th","Tongan":"to","Turkish":"tr","Ukrainian":"uk","Urdu":"ur","Vietnamese":"vi","Welsh":"cy","Yucatec Maya":"yua"}
 topic = topic.lower()
@@ -31,24 +29,27 @@ if "en" not in target_languages:
 num_tweets = int(num_tweets)
 max_days = int(days)
 
-# In[20]:
+
+# In[ ]:
 
 
 assert (query == "") or (users == "") # Can either search by query or by user, not both
 
 
-# In[21]:
+# In[ ]:
 
 
 %run "config"
 
 
-# In[22]:
+# In[ ]:
+
 
 %run "common"
 
 
-# In[23]:
+# In[ ]:
+
 
 import re
 import sys
@@ -69,17 +70,17 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
 
-# In[24]:
+# In[ ]:
 
 
 client = CosmosClient(COSMOS_URL, {'masterKey': COSMOS_KEY})
 database = client.get_database_client(COSMOS_DATABASE_NAME)
 
 tweet_container_client = database.get_container_client(container=COSMOS_CONTAINER_NAME)
-#user_container_client = database.get_container_client(container="users") # using one container for tweets and users for now
 
 
-# In[25]:
+# In[ ]:
+
 
 auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET_KEY)
 auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
@@ -92,10 +93,7 @@ auth_api = API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 regions = ["Africa","Arabian Gulf","Asia","Central America","Europe","Middle East","North America","Oceania","South America"]
 
 
-
-
-# In[31]:
-
+# In[ ]:
 
 
 def remove_emojis(data):
@@ -121,7 +119,9 @@ def remove_emojis(data):
         "]+", re.UNICODE)
     return re.sub(emoji, '', data)
 
-# In[32]:
+
+# In[ ]:
+
 
 
 def build_entry(topic, status, query_search, container, query_language=None, target_languages=[], username=""):
@@ -130,6 +130,13 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
     # Check for tweets which have already been added
     search_query = 'select * from items where items.id="{0}"'.format(id_str)
     items = list(container.query_items(search_query,enable_cross_partition_query=True))
+
+    dt2 = datetime.now()
+    ts = int(time.mktime(dt2.timetuple()))
+    at = dt2.strftime("%m/%d/%Y, %H:%M:%S %Z")
+    tweet['inserted_to_CosmosDB_at'] = at
+    tweet['inserted_to_CosmosDB_ts'] = ts
+
     new_tweet = True
     if len(items) > 0:
         # For existing tweets, assuming tweet text the same, so don't re-process
@@ -141,14 +148,9 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
         tweet = updatedtweet
         user_obj = None # don't need to re-insert the user if already seen before
         new_tweet = False
-    elif str(tweet["full_text"].lower().encode('ascii',errors='ignore')).startswith("rt @") == False:
+    elif not(tweet["full_text"].lower().startswith("rt ")):
         print("New Tweet")
         new_tweet = True
-        dt2 = datetime.now()
-        ts = int(time.mktime(dt2.timetuple()))
-        at = dt2.strftime("%m/%d/%Y, %H:%M:%S %Z")
-        tweet['inserted_to_CosmosDB_at'] = at
-        tweet['inserted_to_CosmosDB_ts'] = ts
         tweet["originalid"] = tweet["id"]
         tweet["id"] = str(int(tweet["id_str"])+abs(hash(topic))) # artifically creating our own ID
         tweet["topickey"] = topic
@@ -185,8 +187,7 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
             named_entity_obj[query_language] = org_language_entities
         else:
             named_entities = get_ner(tweet_text) # list of objects where each object corresponds to an entity
-            # named_entity_obj = {"en": named_entities}
-          # get translation to all target languages for all entities        
+                 
         # add location information from azure maps
         named_entities_with_location = []
         for ent in named_entities:
@@ -198,12 +199,14 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
                     r_json = get_maps_response(ent_text)
                     if r_json: # i.e. got a response
                         if r_json["summary"]["numResults"] > 0:
-                            # there is a location detected, so get the country
-                            top_match = r_json['results'][0]["address"]
-                            country = top_match["country"]
-                            country_code = top_match["countryCode"]
-                            new_ent["country_azuremaps"] = country
-                            new_ent["country_code_azuremaps"] = country_code
+                            if "address" in r_json['results'][0].keys():
+                                top_match = r_json['results'][0]["address"]
+                                if "country" in top_match.keys() and "countryCode" in top_match.keys() :
+                                    # there is a location detected, so get the country
+                                    country = top_match["country"]
+                                    country_code = top_match["countryCode"]
+                                    new_ent["country_azuremaps"] = country
+                                    new_ent["country_code_azuremaps"] = country_code
             named_entities_with_location.append(new_ent)
         named_entity_obj["en"] = named_entities_with_location
         for language in target_languages:
@@ -236,12 +239,14 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
                     # there is a location detected, so get the country
                     if "address" in r_json['results'][0].keys():
                         top_match = r_json['results'][0]["address"]
-                        if "country" in top_match.keys() and "countryCode" in top_match.keys() :
+                        if "country" in top_match.keys() and "countryCode" in top_match.keys():
                             country = top_match["country"]
                             country_code = top_match["countryCode"]
                             user_obj["country_azuremaps"] = country
                             user_obj["country_code_azuremaps"] = country_code
         tweet["userid"]=user_obj["id"]
+    else:
+        return None, None, False
     return tweet, user_obj, new_tweet
 def process_tweets(topic="", query="", language="en", maxdays=365, maxtweets_persearch=1, user="", query_search=True, container=None, target_languages=[], username=""):
     print("Working on topic: " + topic)
@@ -288,7 +293,9 @@ def process_tweets(topic="", query="", language="en", maxdays=365, maxtweets_per
         print("Found "+str(count) +" tweets for user: "+ user)
         return all_tweets, all_users
 
-# In[52]:
+
+# In[ ]:
+
 
 if users == "": # query search
     all_tweets, all_users = process_tweets(topic, query, query_language, maxdays=max_days, maxtweets_persearch=num_tweets, user="", query_search=True, container=tweet_container_client, target_languages=target_languages)

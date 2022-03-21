@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+
+
+# In[ ]:
 
 
 import os
@@ -23,13 +25,13 @@ from dateutil.parser import parse
 import re,string
 
 
-# In[2]:
+# In[ ]:
 
 
 %run "config"
 
 
-# In[3]:
+# In[ ]:
 
 
 # Connect to Cosmos
@@ -39,27 +41,25 @@ database = client.get_database_client(COSMOS_DATABASE_NAME)
 tweet_container_client = database.get_container_client(container=COSMOS_CONTAINER_NAME)
 
 
-# In[4]:
+# In[ ]:
 
 
-%%spark
-val dfLastInsertedInDW = spark.read.synapsesql(DB_NAME+".dbo.[Tweets]")
-dfLastInsertedInDW.createOrReplaceTempView("dfLastInsertedInDW")
+last_inserted_ts = 0
 
+jdbc_url = "jdbc:sqlserver://" + SYNAPSE_WORKSPACE_NAME + ".sql.azuresynapse.net:1433;database=" + DB_NAME + ";encrypt=true;trustServerCertificate=true;hostNameInCertificate=*.sql.azuresynapse.net;loginTimeout=30;"
 
+jdbcDF = spark.read.format("jdbc").option("url", jdbc_url).option("query", "SELECT MAX(inserted_to_CosmosDB_ts) AS outp FROM dbo.Tweets").option("user", SQL_USERNAME).option("password", SQL_PASSWORD).load()
 
-# In[5]:
-
-
-last_inserted_ts=0
-dfLastInsertedInDW = spark.sql("select * from dfLastInsertedInDW")
 try:
-   last_inserted_ts=dfLastInsertedInDW.agg(max("inserted_to_CosmosDB_ts"))
-except:
-    last_inserted_ts=0
+    last_inserted_ts = jdbcDF.first()[0]
+except: 
+    last_inserted_ts = 0
+
+if not(last_inserted_ts): # if the table is empty get back None
+    last_inserted_ts = 0
 
 
-# In[6]:
+# In[ ]:
 
 
 now = datetime.datetime.now()
@@ -70,12 +70,9 @@ LANGUAGE_CODES={"All":"","Afrikaans":"af","Arabic":"ar","Assamese":"as","Bangla"
 LANGUAGE_CODES = {v: k for (k, v) in LANGUAGE_CODES.items()}
 
 
+# In[ ]:
 
-# # Tweets Querying + Modeling
 
-# In[8]:
-
-# query = "SELECT items.id,items.subtopic, items.full_text, items.user, items.lang, items.place, items.retweet_count, items.favorite_count, items.entities, items.possibly_sensitive, items.translations, items.classification, items.possible_news, items.key_phrases, items.named_entities, items.topics, items.created_at,  items.topic_names, items.query_list, items.topic_relevancy_list, items.worthiness, items._ts, items.in_reply_to_status_id, items.in_reply_to_user_id, items.source from items where items.document_type = 'tweet' and items._ts >= "  + str(last_inserted_ts) #+ " and items.timestamp_ms >= '"+str(span_ms) + "'"
 # TODO: This cell needs cleaning - lots of repeated accesses etc. Even datetime.now
 query = "SELECT items.id,items.subtopic, items.full_text, items.user, items.userid, items.lang, items.place, items.retweet_count, items.favorite_count, items.entities, items.topics, items.translations, items.key_phrases, items.named_entities, items.sentiment, items.topickey, items.created_at, items.query, items.inserted_to_CosmosDB_ts, items.in_reply_to_status_id, items.in_reply_to_user_id, items.source from items where items.document_type = 'tweet' and items.inserted_to_CosmosDB_ts >= "  + str(last_inserted_ts) # Need to see which fields we want from cosmos. items.inserted_to_CosmosDB_ts used to be _ts - check the same?
 lst, lstsearches, lsthashtags, lsthandles, lstmedia, lstKeyPhrases, lstEntities, lstSentiment,  lstTranslations, lstURLs = ([] for i in range(10))
@@ -89,9 +86,6 @@ for posts in tweet_container_client.query_items(query,enable_cross_partition_que
 
   for l in posts['translations']:
     lstTranslations.append([id_str, l, posts['translations'][l], _datetime.now()])
-  #for l in posts['key_phrases']:
-  #  for phrase in posts['key_phrases'][l]:
-  #    lstKeyPhrases.append([id_str, phrase, LANGUAGE_CODES.get(l, "unknown"), _datetime.now()])
   for l in posts['named_entities']:
     for entity in posts['named_entities'][l]:
       if 'country_azuremaps' in entity.keys() and 'country_code_azuremaps' in entity.keys():
@@ -106,12 +100,6 @@ for posts in tweet_container_client.query_items(query,enable_cross_partition_que
   else:
       city = posts["place"]['name']
       country = posts["place"]['country']
-  #if posts['lang'] == 'en':
-  #  Language = 'English'
-  #elif posts['lang'] == 'ar':
-  #  Language = 'Arabic'
-  #else:
-  #    Language = 'Unknown'
   for hashtag in posts['entities']['hashtags']:
     lsthashtags.append([id_str, hashtag['text'], _datetime.now()])
   for user_mention in posts['entities']['user_mentions']:
@@ -121,9 +109,6 @@ for posts in tweet_container_client.query_items(query,enable_cross_partition_que
   if 'media' in posts['entities']:
     for media in posts['entities']['media']:
       lstmedia.append([id_str, media['media_url'], _datetime.now()])
-#   if 'classification' in posts: # for al jazeera
-#     for classification in posts['classification']:
-#       lstclassifications.append([id_str, classification, _datetime.now()])
   if "sentiment" in posts.keys():
     lstSentiment.append([id_str, posts["sentiment"]["sentiment"], posts["sentiment"]["score"], _datetime.now()])
   adjustedCreatedDateTime = parse(posts["created_at"])+ timedelta(hours=3) 
@@ -134,14 +119,13 @@ for posts in tweet_container_client.query_items(query,enable_cross_partition_que
   #append tweet
   lst.append([id_str, 
               posts["full_text"],
-              #posts["user"]["id_str"], 
               posts["userid"],
 	      posts["topickey"],
 	      posts["subtopic"],
               city, country,               
               posts["retweet_count"], 
               posts["favorite_count"], Language,  
-              0,#int(posts["worthiness"]), 
+              0,
               posts["source"], posts["source"], 
               '', #factcheckURL, - for al jazeera, don't need
               'https://twitter.com/' + posts['user']['screen_name'] + '/status/' +idforlink,
@@ -156,113 +140,146 @@ for posts in tweet_container_client.query_items(query,enable_cross_partition_que
               _datetime.now(),
              ])
 
-# In[9]:
+
+# In[ ]:
+
 
 # Create Spark Dataframes
-schema = StructType([StructField("id",StringType(),False),  StructField("text",StringType(),True),  StructField("userid",StringType(),True),  StructField("topic",StringType(),True),  StructField("subtopic",StringType(),True),  StructField("city",StringType(),True),  StructField("country",StringType(),True),  StructField("retweets",LongType(),False),  StructField("likes",LongType(),True),  StructField("lang",StringType(),True),  StructField("worthinessScore",LongType(),True),  StructField("fullSource",StringType(),True),  StructField("Source",StringType(),True),  StructField("factCheckURL",StringType(),True),  StructField("tweetURL",StringType(),True),  StructField("isRetweet",StringType(),True),  StructField("possibleNews",StringType(),True),  StructField("replyToStatus",LongType(),True),  StructField("replyToUser",LongType(),True),  StructField("created_date",DateType(),True),  StructField("created_datetime",TimestampType(),True),  StructField("inserted_to_CosmosDB_datetime",TimestampType(),True),  StructField("inserted_to_CosmosDB_ts",LongType(),True),  StructField("inserted_datetime", TimestampType(), True)])
+schema = StructType([StructField("id",StringType(),False),
+  StructField("text",StringType(),True),
+  StructField("userid",StringType(),True),
+  StructField("topic",StringType(),True),
+  StructField("subtopic",StringType(),True),
+  StructField("city",StringType(),True),
+  StructField("country",StringType(),True),
+  StructField("retweets",LongType(),False),
+  StructField("likes",LongType(),True),
+  StructField("lang",StringType(),True),
+  StructField("worthinessScore",LongType(),True),
+  StructField("fullSource",StringType(),True),
+  StructField("Source",StringType(),True),
+  StructField("factCheckURL",StringType(),True),
+  StructField("tweetURL",StringType(),True),
+  StructField("isRetweet",StringType(),True),
+  StructField("possibleNews",StringType(),True),
+  StructField("replyToStatus",LongType(),True),
+  StructField("replyToUser",LongType(),True),
+  StructField("created_date",DateType(),True),
+  StructField("created_datetime",TimestampType(),True),
+  StructField("inserted_to_CosmosDB_datetime",TimestampType(),True),
+  StructField("inserted_to_CosmosDB_ts",LongType(),True),
+  StructField("inserted_datetime", TimestampType(), True)])
 dftweets = sqlContext.createDataFrame(lst,schema)
 dftweets.createOrReplaceTempView("dftweets")
-schema = StructType([StructField("id",StringType(),False),  StructField("hashtags",StringType(),False),  StructField("created_datetime", TimestampType(), False)])
+schema = StructType([StructField("id",StringType(),False),
+StructField("hashtags",StringType(),False),
+StructField("created_datetime", TimestampType(), False)])
 dfhashtags = spark.createDataFrame(lsthashtags, schema)
 dfhashtags.createOrReplaceTempView("dfhashtags")
-schema = StructType([StructField("id",StringType(),False),  StructField("handles",StringType(),False),  StructField("created_datetime", TimestampType(), False)])
+schema = StructType([StructField("id",StringType(),False),
+StructField("handles",StringType(),False),
+StructField("created_datetime", TimestampType(), False)])
 dfhandles = spark.createDataFrame(lsthandles,schema)
 dfhandles.createOrReplaceTempView("dfhandles")
-schema = StructType([StructField("id",StringType(),False),  StructField("media",StringType(),False),  StructField("created_datetime", TimestampType(), False)])
+schema = StructType([StructField("id",StringType(),False),
+StructField("media",StringType(),False),
+StructField("created_datetime", TimestampType(), False)])
 dfmedia = spark.createDataFrame(lstmedia,schema)
 dfmedia.createOrReplaceTempView("dfmedia")
-# schema = StructType([StructField("id",LongType(),False), \
-#   StructField("classifications",StringType(),False), \
-#   StructField("created_datetime", TimestampType(), False)])
-# dfclassifications = spark.createDataFrame(lstclassifications,schema)
-schema = StructType([StructField("id",StringType(),False),  StructField("URL",StringType(),True),  StructField("Expanded_URL",StringType(),True),  StructField("display_URL",StringType(),True),  StructField("created_datetime", TimestampType(), True)])
+
+schema = StructType([StructField("id",StringType(),False),
+StructField("URL",StringType(),True),
+StructField("Expanded_URL",StringType(),True),
+StructField("display_URL",StringType(),True),
+StructField("created_datetime", TimestampType(), True)])
 dfURLs = spark.createDataFrame(lstURLs,schema)
 dfURLs.createOrReplaceTempView("dfURLs")
-schema = StructType([StructField("id",StringType(),False),  StructField("Language",StringType(),False),  StructField("Text",StringType(),False),  StructField("created_datetime", TimestampType(), True)])
+schema = StructType([StructField("id",StringType(),False),
+StructField("Language",StringType(),False),
+StructField("Text",StringType(),False),
+StructField("created_datetime", TimestampType(), True)])
 dfTranslations = spark.createDataFrame(lstTranslations,schema)
 dfTranslations.createOrReplaceTempView("dfTranslations")
-#schema = StructType([StructField("id",StringType(),False),  StructField("KeyPhrase",StringType(),False),  StructField("Language",StringType(),True),  StructField("created_datetime", TimestampType(), True)])
-#dfKeyPhrases = spark.createDataFrame(lstKeyPhrases,schema)
-#dfKeyPhrases.createOrReplaceTempView("dfKeyPhrases")
-schema = StructType([StructField("id",StringType(),False),  StructField("category",StringType(),False),  StructField("subcategory",StringType(),True),  StructField("value",StringType(),True),  StructField("Language",StringType(),True),  StructField("confidence_score",FloatType(),True),  StructField("country_azuremaps",StringType(),True),  StructField("country_code_azuremaps",StringType(),True),  StructField("created_datetime", TimestampType(), True)])
+schema = StructType([StructField("id",StringType(),False),
+StructField("category",StringType(),False),
+StructField("subcategory",StringType(),True),
+StructField("value",StringType(),True),
+StructField("Language",StringType(),True),
+StructField("confidence_score",FloatType(),True),
+StructField("country_azuremaps",StringType(),True),
+StructField("country_code_azuremaps",StringType(),True),
+StructField("created_datetime", TimestampType(), True)])
 dfEntities = spark.createDataFrame(lstEntities,schema)
 dfEntities.createOrReplaceTempView("dfEntities")
-schema = StructType([StructField("id", StringType(), False),                     StructField("sentiment", StringType(), True),                     StructField("overallscore", FloatType(), True),                     StructField("created_datetime", TimestampType(), True)                    ])
+schema = StructType([StructField("id", StringType(), False),
+StructField("sentiment", StringType(), True),
+StructField("overallscore", FloatType(), True),
+StructField("created_datetime", TimestampType(), True)])
 dfSentiment = spark.createDataFrame(lstSentiment, schema)
 dfSentiment.createOrReplaceTempView("dfSentiment")
 
 
-# In[10]:
+# In[ ]:
 
 
 if dftweets.count() == 0:
   print("Didn't capture new tweets.")
-  # dbutils.notebook.exit(0)
-  #mssparkutils.notebook.exit("no more tweets")
 else:
   print(str(dftweets.count() ) + " tweets to process.")
 
 
 # # Synapse Data Ingestion
 
-# In[11]:
-
+# In[ ]:
 
 %%spark
 val scala_dftweets = spark.sqlContext.sql ("select * from dftweets")
 scala_dftweets.write.synapsesql(DB_NAME+".stg.[Tweets]", Constants.INTERNAL)
 
 
-# In[12]:
-
+# In[ ]:
 
 %%spark
 val scala_dfhashtags = spark.sqlContext.sql ("select * from dfhashtags")
 scala_dfhashtags.write.synapsesql(DB_NAME+".stg.[Hashtags]", Constants.INTERNAL)
 
 
-# In[13]:
-
+# In[ ]:
 
 %%spark
 val scala_dfhandles = spark.sqlContext.sql ("select * from dfhandles")
 scala_dfhandles.write.synapsesql(DB_NAME+".stg.[Handles]", Constants.INTERNAL)
 
 
-# In[14]:
-
+# In[ ]:
 
 %%spark
 val scala_dfmedia = spark.sqlContext.sql ("select * from dfmedia")
 scala_dfmedia.write.synapsesql(DB_NAME+".stg.[TweetMedia]", Constants.INTERNAL)
 
 
-# In[15]:
-
+# In[ ]:
 
 %%spark
 val scala_dfSentiment = spark.sqlContext.sql ("select * from dfSentiment")
 scala_dfSentiment.write.synapsesql(DB_NAME+".stg.[Sentiments]", Constants.INTERNAL)
 
 
-
-# In[18]:
-
+# In[ ]:
 
 %%spark
 val scala_dfURLs = spark.sqlContext.sql ("select * from dfURLs")
 scala_dfURLs.write.synapsesql(DB_NAME+".stg.[TweetURLs]", Constants.INTERNAL)
 
 
-# In[19]:
-
+# In[ ]:
 
 %%spark
 val scala_dfTranslations = spark.sqlContext.sql ("select * from dfTranslations")
 scala_dfTranslations.write.synapsesql(DB_NAME+".stg.[Translations]", Constants.INTERNAL)
 
-# In[21]:
 
+# In[ ]:
 
 %%spark
 val scala_dfEntities = spark.sqlContext.sql ("select * from dfEntities")

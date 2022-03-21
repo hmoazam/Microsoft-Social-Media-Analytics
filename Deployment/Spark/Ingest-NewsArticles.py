@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+
+# In[ ]: 
 
 
 import urllib.parse
@@ -13,19 +14,34 @@ from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 
 
-# In[3]:
+# In[ ]:
 
 
 %run "config"
 
 
-# In[4]:
+# In[ ]:
 
 
 %run "common"
 
 
-# In[13]:
+# In[ ]: Parameters
+
+
+query = ""
+topic = ""
+subtopic = ""
+query_language = "All"
+target_languages = "English,Arabic"
+from_date = ""
+to_date = ""
+sort_by = "popularity" # popularity, relevancy, publishedAt
+qInTitle = "" #?
+page_size = "20"
+
+
+# In[ ]:
 
 
 
@@ -114,30 +130,13 @@ LANGUAGE_CODES = {
 }
 
 
-# ### Parameters
-
-# In[14]: Parameters
-
-query = "Ukraine"
-topic = "News"
-subtopic = ""
-language = "All"
-target_languages = "English,French"
-from_date = ""
-to_date = ""
-sort_by = "popularity" # popularity, relevancy, publishedAt
-qInTitle = "" #?
-page_size = "20"
+# In[ ]:
 
 
-
-# In[15]:
 
 config = {}
-#config["topic"] = topic
-config["q"] = query
-# languages = dbutils.widgets.get("languages")
-language_codes = [LANGUAGE_CODES.get(key) for key in language.split(",") if key != "All"]
+config["q"] = safe_string = urllib.parse.quote_plus(query)
+language_codes = [LANGUAGE_CODES.get(key) for key in query_language.split(",") if key != "All"]
 if language_codes:
     if language_codes[0] in ["ar","de","en","es","fr","he","it","nl","no","pt","ru","se","ud","zh"]:
         config["language"] = language_codes[0]# ','.join(language_codes) # take the first language only as the API does not support multiple values
@@ -147,14 +146,13 @@ config["sortBy"] = sort_by
 config["qInTitle"] = qInTitle
 config["pageSize"] = page_size
 config["apiKey"] = NEWS_API_KEY
-# dbutils.widgets.multiselect("target_languages", "English", list(LANGUAGE_CODES.keys()), "04.Target Languages")
 target_languages = [LANGUAGE_CODES.get(lang, "") for lang in target_languages.split(",")]
 if "en" not in target_languages:
     target_languages.append("en") # always include english in target languages
 
 
 
-# In[19]:
+# In[ ]:
 
 
 client = CosmosClient(COSMOS_URL, {'masterKey': COSMOS_KEY})
@@ -163,7 +161,9 @@ database = client.get_database_client(COSMOS_DATABASE_NAME)
 article_container_client = database.get_container_client(container=COSMOS_ARTICLE_CONTAINER_NAME)
 
 
-# In[20]:
+# In[ ]:
+
+
 def build_query(config, page=1):
     query = "http://newsapi.org/v2/everything?"
     for k,v in config.items():
@@ -261,8 +261,8 @@ while True:
 print("Done! Article: ",str(len(all_articles)))
 
 
-
-# In[21]:
+# In[ ]:
 
 
 update_cosmos(all_articles, article_container_client) # insert tweets
+
