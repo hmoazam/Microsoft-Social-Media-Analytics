@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+
 # In[5]:
 
 
@@ -84,13 +85,14 @@ def get_key_phrases(inp_text):
       print("Encountered Translation exception. {}".format(err))
     return []
 
+
 # In[ ]:
 
 
 def update_cosmos(objects, container): # insert tweets/users to cosmos
     for obj in objects:
         if obj:
-	    response = container.upsert_item(body=obj) # use upsert so that insert or update
+            response = container.upsert_item(body=obj) # use upsert so that insert or update
     print("Inserted data to cosmos")
 
 
@@ -111,6 +113,7 @@ def get_maps_response(inp):
 
 
 # In[ ]:
+
 
 def get_translation(inp_text, to_languages):
     """
@@ -152,6 +155,4 @@ def get_translation(inp_text, to_languages):
     except Exception as err:
         print("Encountered an exception. {}".format(err))
         return err
-# ### Azure Text Analytics
-# ### Text Cleaning
 

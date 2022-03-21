@@ -12,6 +12,8 @@ COSMOS_KEY = TokenLibrary.getSecret("###KeyVaultName###","COSMOSKEY","KeyVaultLi
 COSMOS_DATABASE_NAME = TokenLibrary.getSecret("###KeyVaultName###","COSMOSDATABASENAME","KeyVaultLinkedService")
 COSMOS_CONTAINER_NAME = "tweets_and_users"
 COSMOS_ARTICLE_CONTAINER_NAME = "articles"
+COSMOS_RSS_FEEDS_CONTAINER_NAME = "rss_articles"
+
 # Text analytics
 TEXT_ANALYTICS_KEY = TokenLibrary.getSecret("###KeyVaultName###","TEXTANALYTICSKEY","KeyVaultLinkedService")
 TEXT_ANALYTICS_ENDPOINT = TokenLibrary.getSecret("###KeyVaultName###","TEXTANALYTICSENDPOINT","KeyVaultLinkedService")
@@ -45,8 +47,12 @@ STORAGE_KEY = TokenLibrary.getSecret("###KeyVaultName###","STORAGEKEY","KeyVault
 MAPS_KEY = TokenLibrary.getSecret("###KeyVaultName###","MAPSKEY","KeyVaultLinkedService")
 
 
-# In[5]:
+# Synapse workspace name - used in jdbc connection string parameter
+SYNAPSE_WORKSPACE_NAME = TokenLibrary.getSecret("###KeyVaultName###","SYNWORKSPACENAME","KeyVaultLinkedService")
 
+
+
+# In[ ]:
 
 %%spark
 val DB_NAME = TokenLibrary.getSecret("###KeyVaultName###","DBNAME","KeyVaultLinkedService")
