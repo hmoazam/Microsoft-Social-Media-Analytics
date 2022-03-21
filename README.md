@@ -23,7 +23,7 @@ solution, as well as ideas and scenarios for extending the solution.
 The architecture of the Social Media Analytics accelerator is depicted
 below. The accelerator uses the following components:
 
--   Data Sources: Twitter, news/web articles & RSS feeds
+-   Data Sources: Twitter, news/web articles.
 
 -   Azure Synapse Analytics
 
