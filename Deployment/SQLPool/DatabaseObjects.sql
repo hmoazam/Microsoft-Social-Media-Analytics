@@ -454,59 +454,29 @@ IF EXISTS(SELECT 1 FROM sys.procedures where name = 'FromStgToMain_NewsArticles'
 DROP PROC [dbo].[FromStgToMain_NewsArticles] 
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE PROC [dbo].[FromStgToMain_NewsArticles] AS
 BEGIN 
-
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Articles'))
-	BEGIN
 	INSERT [dbo].[Articles]([id],[topic],[subtopic], [sourceName], [author], [title], [description], [url], [urlToImage], [content], [publishedAt], [inserted_to_CosmosDB_datetime], [inserted_to_CosmosDB_ts],[domainname],[type])
 	SELECT [id],[topic],[subtopic], [sourceName], [author], [title], [description], [url], [urlToImage], [content], [publishedAt], [inserted_to_CosmosDB_datetime], [inserted_to_CosmosDB_ts],[domainname],[type] 
 	FROM [stg].[Articles]
 	WHERE id not in (SELECT id FROM [dbo].[Articles]);
 	DROP TABLE [stg].[Articles];
-	END 
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'ArticlesEntities'))
-	BEGIN
 	INSERT [dbo].[ArticlesEntities]([id], [category], [subcategory], [value], [language], [confidence_score], [created_datetime])
 	SELECT [id], [category], [subcategory], [value], [language], [confidence_score], [created_datetime] 
 	FROM [stg].[ArticlesEntities]
 	WHERE id not in (SELECT id FROM [dbo].[ArticlesEntities]);
 	DROP TABLE [stg].[ArticlesEntities];
-	END 
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'ArticlesSentiments'))
-	BEGIN
 	INSERT [dbo].[ArticlesSentiments]  ([id],[sentiment],[overallscore], [created_datetime])
 	select [id],[sentiment],[overallscore], [created_datetime]
 	from [stg].[ArticlesSentiments] WHERE id not in (SELECT id FROM [dbo].[ArticlesSentiments]);
 	DROP TABLE [stg].[ArticlesSentiments];
-	END
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'ArticlesTranslations'))
-	BEGIN
-	INSERT [dbo].[ArticlesTranslations]  ([id], [Language],[field], [Text], [created_datetime])
-	select [id], [Language],[field], [Text], [created_datetime]
+	INSERT [dbo].[ArticlesTranslations]  ([id], [Language],[Title], [Description], [Content], [created_datetime])
+	select [id], [Language],[Title], [Description], [Content], [created_datetime]
 	from [stg].[ArticlesTranslations] WHERE id not in (SELECT id FROM [dbo].[ArticlesTranslations]);
 	DROP TABLE [stg].[ArticlesTranslations];
-	END
 
 END;
 GO
@@ -568,55 +538,29 @@ IF EXISTS(SELECT 1 FROM sys.procedures where name = 'FromStgToMain_RSSArticles')
 DROP PROC [dbo].[FromStgToMain_RSSArticles] 
 GO
 
-
 CREATE PROC [dbo].[FromStgToMain_RSSArticles] AS
-BEGIN
-
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'RSSArticles'))
-	BEGIN
+BEGIN 
 	INSERT [dbo].[RSSArticles]([id],[source],[title], [summary], [url], [img_url], [published_at], [inserted_datetime], [inserted_to_CosmosDB_datetime], [inserted_to_CosmosDB_ts], [topic], [subtopic])
 	SELECT [id],[source],[title], [summary], [url], [img_url], [published_at], [inserted_datetime], [inserted_to_CosmosDB_datetime], [inserted_to_CosmosDB_ts], [topic], [subtopic] 
 	FROM [stg].[RSSArticles]
 	WHERE id not in (SELECT id FROM [dbo].[RSSArticles]);
 	DROP TABLE [stg].[RSSArticles];
-	END
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'RSSArticlesEntities'))
-	BEGIN
 	INSERT [dbo].[RSSArticlesEntities]([id], [language], [category], [subcategory], [value], [confidence_score], [created_datetime])
 	SELECT [id], [language], [category], [subcategory], [value], [confidence_score], [created_datetime] 
 	FROM [stg].[RSSArticlesEntities]
 	WHERE id not in (SELECT id FROM [dbo].[RSSArticlesEntities]);
 	DROP TABLE [stg].[RSSArticlesEntities];
-	END 
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'RSSArticlesSentiments'))
-	BEGIN
 	INSERT [dbo].[RSSArticlesSentiments]  ([id],[sentiment],[overallscore], [created_datetime])
 	select [id],[sentiment],[overallscore], [created_datetime]
 	from [stg].[RSSArticlesSentiments] WHERE id not in (SELECT id FROM [dbo].[ArticlesSentiments]);
 	DROP TABLE [stg].[RSSArticlesSentiments];
-	END 
 
-	IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'RSSArticlesTranslations'))
-	BEGIN
 	INSERT [dbo].[RSSArticlesTranslations]  ([id], [Language], [Title], [Summary], [created_datetime])
 	select [id], [Language], [Title], [Summary], [created_datetime]
 	from [stg].[RSSArticlesTranslations] WHERE id not in (SELECT id FROM [dbo].[ArticlesTranslations]);
 	DROP TABLE [stg].[RSSArticlesTranslations];
-	END
 
 END
 GO
@@ -678,15 +622,9 @@ IF EXISTS(SELECT 1 FROM sys.procedures where name = 'FromStgToMain_Tweets')
 DROP PROC [dbo].[FromStgToMain_Tweets] 
 GO
 
-
 CREATE PROC [dbo].[FromStgToMain_Tweets] AS
 BEGIN
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Tweets'))
-BEGIN
 INSERT [dbo].[Tweets]  ([id],[text],[userid],[topic],[subtopic],[city],[country],[retweets],[likes],[lang],[worthinessScore],[fullSource],[Source],[factCheckURL],[tweetURL],[isRetweet],[possibleNews],[replyToStatus],[replyToUser],[created_date],[created_datetime],[inserted_to_CosmosDB_datetime],[inserted_to_CosmosDB_ts],[inserted_datetime])
 SELECT [id],[text],[userid],[topic],[subtopic],[city],[country],[retweets],[likes],[lang],[worthinessScore],[fullSource],[Source],[factCheckURL],[tweetURL],[isRetweet],[possibleNews],[replyToStatus],[replyToUser],[created_date],[created_datetime],[inserted_to_CosmosDB_datetime],[inserted_to_CosmosDB_ts],[inserted_datetime] 
 FROM [stg].[Tweets] WHERE id not in (SELECT id FROM [dbo].[Tweets]);
@@ -695,87 +633,45 @@ UPDATE [dbo].[Tweets] SET [retweets] = stg.[retweets],[likes] = stg.[likes],
 FROM [stg].[Tweets] stg
 JOIN [dbo].[Tweets] tst ON tst.id=stg.id;
 DROP TABLE [stg].[Tweets];
-END
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Hashtags'))
-BEGIN
 INSERT [dbo].[Hashtags]  ([id],[hashtags],[created_datetime])
 SELECT [id],[hashtags],[created_datetime] 
 FROM [stg].[Hashtags] WHERE id not in (SELECT id FROM [dbo].[Hashtags]);
 DROP TABLE [stg].[Hashtags];
-END
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Handles'))
-BEGIN
 INSERT [dbo].[Handles]  ([id],[handles],[created_datetime])
 SELECT [id],[handles],[created_datetime]
 FROM [stg].[Handles] WHERE id not in (SELECT id FROM [dbo].[Handles]);
 DROP TABLE [stg].[Handles];
-END 
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'TweetMedia'))
-BEGIN
 INSERT [dbo].[TweetMedia]  ([id],[media],[created_datetime])
 select [id],[media],[created_datetime] 
 from [stg].[TweetMedia] WHERE id not in (SELECT id FROM [dbo].[TweetMedia]);
 DROP TABLE [stg].[TweetMedia];
-END 
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Sentiments'))
-BEGIN
 INSERT [dbo].[Sentiments]  ([id],[sentiment],[overallscore], [created_datetime])
 select [id],[sentiment],[overallscore], [created_datetime]
 from [stg].[Sentiments] WHERE id not in (SELECT id FROM [dbo].[Sentiments]);
 DROP TABLE [stg].[Sentiments];
-END
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'TweetURLs'))
-BEGIN
 INSERT [dbo].[TweetURLs]  ([id], [URL], [Expanded_URL], [display_URL], [created_datetime])
 select [id], [URL], SUBSTRING([Expanded_URL], 0,500), [display_URL], [created_datetime] 
 from [stg].[TweetURLs] WHERE id not in (SELECT id FROM [dbo].[TweetURLs]);
 DROP TABLE [stg].[TweetURLs];
-END
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'Translations'))
-BEGIN
 INSERT [dbo].[Translations]  ([id], [Language], [Text], [created_datetime])
 select [id], [Language], [Text], [created_datetime]
 from [stg].[Translations] WHERE id not in (SELECT id FROM [dbo].[Translations]);
 DROP TABLE [stg].[Translations];
-END 
 
-IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
-                 WHERE TABLE_SCHEMA = 'stg' 
-                 AND  TABLE_NAME = 'TweetsEntities'))
-BEGIN
 INSERT [dbo].[TweetsEntities]  ([id], [category], [subcategory], [value], [Language], [confidence_score],[country_azuremaps],[country_code_azuremaps], [created_datetime])
 select [id], [category], [subcategory], [value], [Language], [confidence_score],[country_azuremaps],[country_code_azuremaps], [created_datetime]
 from [stg].[TweetsEntities] WHERE id not in (SELECT id FROM [dbo].[TweetsEntities]);
 DROP TABLE [stg].[TweetsEntities];
-END
 
 
 END
+
 GO
 
 
@@ -868,12 +764,6 @@ GO
 
 CREATE PROC [dbo].[FromStgToMain_Users] AS
 BEGIN
-
-IF (EXISTS (SELECT * 
-    FROM INFORMATION_SCHEMA.TABLES 
-    WHERE TABLE_SCHEMA = 'stg' 
-    AND  TABLE_NAME = 'Users'))
-BEGIN
 INSERT [dbo].[Users]  ([id], [name], [screen_name], [location], [description], [followers_count], [friends_count], [favourites_count], [listed_count], [statuses_count], 
 [isFollowing], [verified], [geoEnabled], [language], [url], [profile_image_url], [background_image_url], [profile_banner_url], [created_date], [created_datetime], [inserted_datetime], 
 [inserted_to_CosmosDB_datetime], [inserted_to_CosmosDB_ts], [last_updated_datetime], [last_updated_ts],[country_azuremaps],[country_code_azuremaps])
@@ -889,10 +779,16 @@ UPDATE [dbo].[Users] SET [location] = stg.[location],[description] = stg.[descri
 FROM [stg].[Users] stg
 JOIN [dbo].[Users] tst ON tst.id=stg.id;
 DROP TABLE [stg].[Users];
-END 
+
 END
+
 GO
 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
 IF EXISTS(SELECT 1 FROM sys.procedures where name = 'FromStgToMain_Users_Cleanup')
 DROP PROC [dbo].[FromStgToMain_Users_Cleanup] 
