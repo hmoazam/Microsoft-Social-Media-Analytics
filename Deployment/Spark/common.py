@@ -154,5 +154,5 @@ def get_translation(inp_text, to_languages):
         return res, from_language # return the translated text, as well as the language it was translated from
     except Exception as err:
         print("Encountered an exception. {}".format(err))
-        return err
+        return None, None
 
