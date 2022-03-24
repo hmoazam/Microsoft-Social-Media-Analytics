@@ -1,5 +1,9 @@
 # Social Media Analytics Accelerator 
 
+# Important
+
+We currently have an issue with Synapse staging tables due to some updates to the SQL pool connector implementation. We are working on a fix, please refer to https://github.com/hmoazam/Microsoft-Social-Media-Analytics/issues/2 for more details/questions.
+
 # Introduction
 
 In today's society, the use of social media has become a necessary daily
