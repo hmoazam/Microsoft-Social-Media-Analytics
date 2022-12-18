@@ -13,7 +13,7 @@ and exploiting opportunities that the competitors may be missing.
 
 The Social Media Accelerator provides the skeleton for building a Social
 Media monitoring platform that helps collect data from social media
-sites and news sites and evaluate that data to make business decisions.
+sites and news sites (via News API and RSS), and evaluate that data to make business decisions.
 This document gives an overview of the solution architecture and
 provides all the necessary requirements and information to deploy the
 solution, as well as ideas and scenarios for extending the solution.
@@ -23,7 +23,7 @@ solution, as well as ideas and scenarios for extending the solution.
 The architecture of the Social Media Analytics accelerator is depicted
 below. The accelerator uses the following components:
 
--   Data Sources: Twitter, news/web articles.
+-   Data Sources: Twitter, news/web articles, RSS feeds.
 
 -   Azure Synapse Analytics
 
@@ -151,55 +151,78 @@ The result of this step should look like the following:
 
 # Customization
 
-The accelerator comes with the specific use case of Arab Cup, and is by
-default using queries and search terms specific to this topic. It is
+The accelerator comes with some sample queries around football and covid, and is by
+default using queries and search terms specific to these topics. It is
 necessary to customize the accelerator with the right search terms to
 meet with the use case in hand. The customization is performed at the
-pipelines' level. The accelerator uses two data sources (Twitter, and
-News Articles), thus there are two pipelines to customize:
+pipelines' level. The accelerator uses three data sources (Twitter,
+NewsAPI and RSS Feeds), thus there are three pipelines to customize:
 
 **News Articles Pipeline:**
 
-This pipeline is named "*News Orchestrator - Arab Cup 1*" and comes with
-multiple activities, of which two *Notebook activities* (highlighted in
-yellow), that need to be customized. Selecting each activity, and
+This pipeline is named "*News Orchestrator*" and comes with
+multiple activities, of which the *Notebook activities* need to be customized. Selecting each activity, and
 checking the *Base parameters* under *Settings* shows the query being
 executed. It is important to customize both the *query* being executed
 and the *topic* properties of each activity. The *topic* is used to tag
 the data collected so that it can later be used to group it in the
-dashboard. If more queries are needed, the Notebook activity can be
+dashboard. If further categorization is needed on the dashboard, you can use *subtopic*.
+If more queries are needed, the Notebook activity can be
 cloned to add the query and linked to the pipeline workflow. No changes
 are required to the rest of the activities (starting from the Cleanup
-activity).
+activity). 
+
+For details on building queries for the News API: https://newsapi.org/docs/endpoints/everything)
 
 ![Graphical user interface, table Description automatically
-generated](./media/image10.png)
+generated](./media/news-orchestrator.png)
 
 **Tweets Pipeline**
 
-This pipeline is named "*Tweets Orchestrator - Arab Cup 1*" and comes
-with multiple activities, of which four *Notebook activities*
-(highlighted in yellow), that need to be customized. Similar to News
+This pipeline is named "*Tweets Orchestrator*" and comes
+with multiple activities, of which the *Notebook activities*
+need to be customized. Similar to News
 Articles, selecting each activity, and checking the *Base parameters*
 under *Settings* shows the query being executed. It is important to
 customize both the *query* being executed and the *topic* properties of
 each activity. The *topic* is used to tag the data collected so that it
-can later be used to group it in the dashboard. If more queries are
-needed, the Notebook activity can be cloned to add the query and linked
+can later be used to group it in the dashboard. If further categorization is needed on the dashboard, you can use *subtopic*.
+If more queries are needed, the Notebook activity can be cloned to add the query and linked
 to the pipeline workflow. No changes are required to the rest of the
-activities (starting from the Cleanup activity).
+activities (starting from the Cleanup activity). 
+
+If you wish to get tweets from a specific user, instead of by query, then leave the query parameter empty, and enter the twitter handle of the user of interest in the user parameter field. 
 
 For details on constructing Twitter queries and the associated limits, refer to: 
 - https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
 - https://developer.twitter.com/en/docs/twitter-api/v1/rules-and-filtering/search-operators
 
 ![Graphical user interface, table Description automatically
-generated](./media/image11.png)
+generated](./media/tweets-orchestrator.png)
+
+
+**RSS Articles Pipeline:**
+
+This pipeline is named "*RSS Orchestrator*" and comes with
+multiple activities, of which the *Notebook activities* need to be customized. Selecting each activity, and
+checking the *Base parameters* under *Settings* shows the configuration being
+executed. You need to enter the RSS feed link under *feed_source*. You can choose to include optional or required keywords to filter the RSS feed under *query_optional* and *query_required*, respectively. The *topic* is used to tag
+the data collected so that it can later be used to group it in the
+dashboard. If further categorization is needed on the dashboard, you can use *subtopic*.
+If more queries are needed, the Notebook activity can be
+cloned to add the query and linked to the pipeline workflow. No changes
+are required to the rest of the activities (starting from the Cleanup
+activity). 
+
+![Graphical user interface, table Description automatically
+generated](./media/rss-orchestrator.png)
 
 **Pipeline Triggers**
 
 After the queries have been added, the data collection can be started by
-simply enabling the triggers
+starting the triggers. You can also modify the triggers to your preferred frequency. 
+
+*Note:* There is an intermittent issue with creating the RSS trigger. You may need to create it manually.
 
 ![Graphical user interface, application, table, Excel Description
 automatically
@@ -208,30 +231,29 @@ generated](./media/image12.png)
 # Power BI Template
 
 A Power BI template file is available to access the insights generated
-from the solution, and consists of an executive dashboard, a Twitter
-analysis page, and a News Articles page. When the Power BI template is
+from the solution, and consists of an executive dashboard, a Football
+page, and a Health page. When the Power BI template is
 opened, it prompts for the data source which should be the Synapse
-workspace Sql endpoint. The report uses Import mode and displays 1 month
-of history. When publishing the report in powerbi.com, *Scheduled
+workspace Sql endpoint. The report uses Import mode. You will need to modify the topic filters on the pages to match the topics you have configured your pipelines with. When publishing the report in powerbi.com, *Scheduled
 refresh* has to be configured to update the data in the dashboard. Below
-are screenshots of the dashboard. When opening the report using Power BI Desktop, make sure to activate the *Azure Map visual* in the Preview Features of Power BI Desktop options.
+are screenshots of the dashboard. When opening the report using Power BI Desktop, make sure to activate the *Azure Map visual* in the Preview Features of Power BI Desktop options. Each of the topic pages contains 3 panels, one each for tweets, news and RSS. You can delete a panel if you are not pulling data from a particular source. 
 
 **Executive Dashboard**
 
 ![Chart Description automatically
-generated](./media/image13.png)
+generated](./media/dashboard-exec-overview.png)
 
 
 
-**Twitter Analysis**
-
-![Graphical user interface, timeline Description automatically
-generated](./media/image14.png)
-
-**News Article Analysis**
+**Football**
 
 ![Graphical user interface, timeline Description automatically
-generated](./media/image15.png)
+generated](./media/dashboard-football.png)
+
+**Health**
+
+![Graphical user interface, timeline Description automatically
+generated](./media/dashboard-health.png)
 
 # Solution Extension
 
