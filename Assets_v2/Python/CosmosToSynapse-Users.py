@@ -149,6 +149,7 @@ dfUsers.createOrReplaceTempView("dfUsers")
 
 if dfUsers.count() == 0:
   print("Didn't capture new users.")
+
 else:
   print(str(dfUsers.count()) + " users to process.")
   

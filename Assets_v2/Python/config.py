@@ -10,7 +10,7 @@ NEWS_API_KEY = TokenLibrary.getSecret("###KeyVaultName###","NEWSAPIKEY","KeyVaul
 COSMOS_URL = TokenLibrary.getSecret("###KeyVaultName###","COSMOSURL","KeyVaultLinkedService")
 COSMOS_KEY = TokenLibrary.getSecret("###KeyVaultName###","COSMOSKEY","KeyVaultLinkedService")
 COSMOS_DATABASE_NAME = TokenLibrary.getSecret("###KeyVaultName###","COSMOSDATABASENAME","KeyVaultLinkedService")
-COSMOS_CONTAINER_NAME = "tweets_and_users"
+COSMOS_CONTAINER_NAME = "tweets_users"
 COSMOS_ARTICLE_CONTAINER_NAME = "articles"
 COSMOS_RSS_FEEDS_CONTAINER_NAME = "rss_articles"
 

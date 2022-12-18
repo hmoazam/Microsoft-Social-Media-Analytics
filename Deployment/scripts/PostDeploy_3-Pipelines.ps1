@@ -1,502 +1,31 @@
-$newstopic = "Arab Cup"
-$news_query_ar ="كأس العرب"
-$news_query_en ="arab cup"
+# Ingest tweets - Queries in English
 
-$tweetstopic1 = "Qatar"
-$tweets_queries1 = "Qatar Arab Cup"
-
-$tweetstopic2 = "Tunisia"
-$tweets_queries2 = "Tunisia Arab Cup"
-
-$tweetstopic3 = "Algeria"
-$tweets_queries3 = "Algeria Arab Cup"
-
-$tweetstopic4 = "Egypt"
-$tweets_queries4 = "Egypt Arab Cup"
-
-
-############# NEWS ARTICLES
-
-$n1="News Orchestrator - $newstopic 1"
+$n1="Tweets Orchestrator"
 $body = @"
 {
     "name": "$n1",
     "properties": {
         "activities": [
             {
-                "name": "$newstopic EN",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$news_query_en",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$newstopic",
-                            "type": "string"
-                        },
-                        "languages": {
-                            "value": "English",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "CosmosToSynapse-News Articles",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Cleanup",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "CosmosToSynapse-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Cleanup",
+                "name": "Cleanup Tweets",
                 "type": "SqlPoolStoredProcedure",
                 "dependsOn": [
                     {
-                        "activity": "$newstopic EN",
+                        "activity": "Football",
                         "dependencyConditions": [
-                            "Succeeded"
+                            "Completed"
                         ]
                     },
                     {
-                        "activity": "$newstopic AR",
+                        "activity": "Football FIFA",
                         "dependencyConditions": [
-                            "Succeeded"
+                            "Completed"
                         ]
                     }
                 ],
                 "policy": {
                     "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "sqlPool": {
-                    "referenceName": "$sqlpoolName",
-                    "type": "SqlPoolReference"
-                },
-                "typeProperties": {
-                    "storedProcedureName": "[dbo].[FromStgToMain_NewsArticles_Cleanup]"
-                }
-            },
-            {
-                "name": "STG to Main",
-                "type": "SqlPoolStoredProcedure",
-                "dependsOn": [
-                    {
-                        "activity": "CosmosToSynapse-News Articles",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "sqlPool": {
-                    "referenceName": "$sqlpoolName",
-                    "type": "SqlPoolReference"
-                },
-                "typeProperties": {
-                    "storedProcedureName": "[dbo].[FromStgToMain_NewsArticles]"
-                }
-            },
-            {
-                "name": "$newstopic AR",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$news_query_ar",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$sqlpoolName",
-                            "type": "string"
-                        },
-                        "languages": {
-                            "value": "Arabic",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            }
-        ],
-        "concurrency": 1,
-        
-        "annotations": [],
-        "lastPublishTime": "2021-12-04T08:06:06Z"
-    },
-    "type": "Microsoft.Synapse/workspaces/pipelines"
-}
-"@ 
-
-$uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n1`?api-version=2020-12-01"
-$global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
-
-
-
-
-############# TWEETS
-
-
-$n2="Tweets Orchestrator - $newstopic 1"
-$body = @"
-{
-    "name": "$n2",
-    "properties": {
-        "activities": [
-            {
-                "name": "$tweetstopic1",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$tweets_queries1",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$tweetstopic1",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "$tweetstopic2",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$tweets_queries2",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$tweetstopic2",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "$tweetstopic3",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$tweets_queries3",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$tweetstopic3",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "$tweetstopic4",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "$tweets_queries4",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "$tweetstopic4",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "CosmosToSynapse-Tweets",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Cleanup",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "CosmosToSynapse-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "From STG to Main",
-                "type": "SqlPoolStoredProcedure",
-                "dependsOn": [
-                    {
-                        "activity": "CosmosToSynapse-Tweets",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "sqlPool": {
-                    "referenceName": "$sqlpoolName",
-                    "type": "SqlPoolReference"
-                },
-                "typeProperties": {
-                    "storedProcedureName": "[dbo].[FromStgToMain_Tweets]"
-                }
-            },
-            {
-                "name": "Cleanup",
-                "type": "SqlPoolStoredProcedure",
-                "dependsOn": [
-                    {
-                        "activity": "$tweetstopic1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    },
-                    {
-                        "activity": "$tweetstopic2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    },
-                    {
-                        "activity": "$tweetstopic3",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    },
-                    {
-                        "activity": "$tweetstopic4",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 1,
+                    "retry": 0,
                     "retryIntervalInSeconds": 30,
                     "secureOutput": false,
                     "secureInput": false
@@ -511,11 +40,11 @@ $body = @"
                 }
             },
             {
-                "name": "CosmosToSynapse-Users",
+                "name": "Cosmos To Synapse - Tweets",
                 "type": "SynapseNotebook",
                 "dependsOn": [
                     {
-                        "activity": "Cleanup_copy1",
+                        "activity": "Cleanup Tweets",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -523,7 +52,98 @@ $body = @"
                 ],
                 "policy": {
                     "timeout": "7.00:00:00",
-                    "retry": 1,
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "CosmosToSynapse-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Stg to Main - Tweets",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Cosmos To Synapse - Tweets",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "$sqlpoolName",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[FromStgToMain_Tweets]"
+                }
+            },
+            {
+                "name": "Cleanup Users",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Stg to Main - Tweets",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "$sqlpoolName",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[FromStgToMain_Users_Cleanup]"
+                }
+            },
+            {
+                "name": "Cosmos To Synapse Users",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Cleanup Users",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
                     "retryIntervalInSeconds": 30,
                     "secureOutput": false,
                     "secureInput": false
@@ -538,15 +158,21 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "From STG to Main_copy1",
+                "name": "Stg to Main Users",
                 "type": "SqlPoolStoredProcedure",
                 "dependsOn": [
                     {
-                        "activity": "CosmosToSynapse-Users",
+                        "activity": "Cosmos To Synapse Users",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -554,7 +180,7 @@ $body = @"
                 ],
                 "policy": {
                     "timeout": "7.00:00:00",
-                    "retry": 1,
+                    "retry": 0,
                     "retryIntervalInSeconds": 30,
                     "secureOutput": false,
                     "secureInput": false
@@ -569,19 +195,366 @@ $body = @"
                 }
             },
             {
-                "name": "Cleanup_copy1",
-                "type": "SqlPoolStoredProcedure",
+                "name": "Football",
+                "type": "SynapseNotebook",
                 "dependsOn": [
                     {
-                        "activity": "From STG to Main",
+                        "activity": "Wait1",
                         "dependencyConditions": [
-                            "Succeeded"
+                            "Completed"
                         ]
                     }
                 ],
                 "policy": {
                     "timeout": "7.00:00:00",
-                    "retry": 1,
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "football OR soccer",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Health - Diabetes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "Health - Diabetes Pregnancy",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "Health - Covid",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "waitTimeInSeconds": 1
+                }
+            },
+            {
+                "name": "Health - Diabetes",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "#diabetes",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "Diabetes",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Health - Diabetes Pregnancy",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "diabetes pregnancy",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "Diabetes",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Football FIFA",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "fifa OR (world cup 2022) or qatar2022",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "FIFA",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Health - Covid",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "covid OR coronavirus OR covid19",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "Covid",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2022-12-14T10:53:58Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}
+"@
+
+$uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n1`?api-version=2020-12-01"
+$global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
+
+
+# News articles
+$n2="News Orchestrator"
+$body = @"
+{
+    "name": "$n2",
+    "properties": {
+        "activities": [
+            {
+                "name": "Cleanup Articles",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Football",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "Football FIFA",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
                     "retryIntervalInSeconds": 30,
                     "secureOutput": false,
                     "secureInput": false
@@ -592,28 +565,685 @@ $body = @"
                     "type": "SqlPoolReference"
                 },
                 "typeProperties": {
-                    "storedProcedureName": "[dbo].[FromStgToMain_Users_Cleanup]"
+                    "storedProcedureName": "[dbo].[FromStgToMain_NewsArticles_Cleanup]"
+                }
+            },
+            {
+                "name": "Cosmos To Synapse - Articles",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Cleanup Articles",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "CosmosToSynapse-NewsArticles",
+                        "type": "NotebookReference"
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Stg to Main - Articles",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Cosmos To Synapse - Articles",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "$sqlpoolName",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[FromStgToMain_NewsArticles]"
+                }
+            },
+            {
+                "name": "Health - covid",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-NewsArticles",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "covid OR coronavirus or covid19 or covid-19",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "Covid",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Football",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-NewsArticles",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "football",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Health - covid",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "Health - Diabetes",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "waitTimeInSeconds": 1
+                }
+            },
+            {
+                "name": "Health - Diabetes",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-NewsArticles",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "Diabetes",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "Diabetes",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Football FIFA",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-NewsArticles",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "FIFA",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "FIFA",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             }
         ],
-        "concurrency": 1,
-        
         "annotations": [],
-        "lastPublishTime": "2021-12-04T08:06:33Z"
+        "lastPublishTime": "2022-12-13T22:59:24Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}
+"@
+
+$uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n2`?api-version=2020-12-01"
+$global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
+
+# RSS Feeds
+
+$n3="RSS Orchestrator"
+$body = @"
+{
+    "name": "$n3",
+    "properties": {
+        "activities": [
+            {
+                "name": "Health - CDC",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-RSS-Feeds",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "feed_source": {
+                            "value": "https://tools.cdc.gov/podcasts/feed.asp?feedid=183",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        },
+                        "query_optional": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_required": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "US Gov",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "HMC",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "BBC Football",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-RSS-Feeds",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "feed_source": {
+                            "value": "https://feeds.bbci.co.uk/sport/football/rss.xml# ",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        },
+                        "query_optional": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_required": {
+                            "value": "fifa",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "FIFA",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "The Independent Football",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-RSS-Feeds",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "feed_source": {
+                            "value": "https://www.independent.co.uk/sport/football/rss",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        },
+                        "query_optional": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_required": {
+                            "value": "fifa",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "FIFA",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Health - Mind Body Green",
+                "type": "SynapseNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "Ingest-RSS-Feeds",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "feed_source": {
+                            "value": "https://www.mindbodygreen.com/rss/feed.xml",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "Arabic,English",
+                            "type": "string"
+                        },
+                        "query_optional": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "query_required": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Health",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "Cleanup RSS",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Health - CDC",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "BBC Football",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "The Independent Football",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    },
+                    {
+                        "activity": "Health - Mind Body Green",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "$sqlpoolName",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[FromStgToMain_RSSArticles_Cleanup]"
+                }
+            },
+            {
+                "name": "RSS Cosmos To Synapse",
+                "type": "SynapseNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Cleanup RSS",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebook": {
+                        "referenceName": "CosmosToSynapse-RSS",
+                        "type": "NotebookReference"
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
+                }
+            },
+            {
+                "name": "RSS Stg to Main",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "RSS Cosmos To Synapse",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "$sqlpoolName",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[FromStgToMain_RSSArticles]"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2022-12-13T22:59:26Z"
     },
     "type": "Microsoft.Synapse/workspaces/pipelines"
 }
 "@ 
 
-$uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n2`?api-version=2020-12-01"
+$uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n3`?api-version=2020-12-01"
 $global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
 
-######### Triggers
-
-$t1="Trigger_2h_1"
+# Triggers
+$t1="Trigger x6 A Day - Tweets"
 $body = @"
 {
-    "name": "$t2",
+    "name": "$t1",
     "properties": {
         "annotations": [],
         "runtimeState": "Started",
@@ -629,18 +1259,21 @@ $body = @"
         "typeProperties": {
             "recurrence": {
                 "frequency": "Hour",
-                "interval": 2,
-                "startTime": "2021-12-02T18:00:00Z",
+                "interval": 4,
+                "startTime": "2022-12-17T13:22:00Z",
                 "timeZone": "UTC"
+                }
             }
         }
     }
 }
 "@
+
 $uri = "https://$workspaceName.dev.azuresynapse.net/triggers/$t1`?api-version=2020-12-01"
 $global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
 
-$t2="Trigger_30min_1"
+
+$t2="Trigger Once A Day - News"
 $body = @"
 {
     "name": "$t2",
@@ -658,14 +1291,63 @@ $body = @"
         "type": "ScheduleTrigger",
         "typeProperties": {
             "recurrence": {
-                "frequency": "Minute",
-                "interval": 30,
-                "startTime": "2021-12-02T18:00:00Z",
-                "timeZone": "UTC"
+                "frequency": "Day",
+                "interval": 1,
+                "startTime": "2022-03-04T16:05:00",
+                "timeZone": "Arab Standard Time",
+                "schedule": {
+                    "minutes": [
+                        0
+                    ],
+                    "hours": [
+                        20
+                    ]
+                }
             }
         }
     }
 }
 "@
-$uri = "https://$workspaceName.dev.azuresynapse.net/triggers/$t2`?api-version=2020-12-01" 
+
+$uri = "https://$workspaceName.dev.azuresynapse.net/triggers/$t2`?api-version=2020-12-01"
+$global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
+
+
+$t3="Trigger Once A Day - RSS"
+$body = @"
+{
+    "name": "$t3",
+    "properties": {
+        "annotations": [],
+        "runtimeState": "Started",
+        "pipelines": [
+            {
+                "pipelineReference": {
+                    "referenceName": "$n3,
+                    "type": "PipelineReference"
+                }
+            }
+        ],
+        "type": "ScheduleTrigger",
+        "typeProperties": {
+            "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "startTime": "2022-03-04T16:05:00",
+                "timeZone": "Arab Standard Time",
+                "schedule": {
+                    "minutes": [
+                        0
+                    ],
+                    "hours": [
+                        20
+                    ]
+                }
+            }
+        }
+    }
+}
+"@
+
+$uri = "https://$workspaceName.dev.azuresynapse.net/triggers/$t3`?api-version=2020-12-01"
 $global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"

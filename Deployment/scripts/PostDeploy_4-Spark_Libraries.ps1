@@ -12,7 +12,7 @@ $body =@"
       "nodeSize": "$sparkNodeSize",
       "autoScale": {
           "enabled": "true",
-          "minNodeCount": "2",
+          "minNodeCount": "3",
           "maxNodeCount": "6"
         },
       "autoPause": {

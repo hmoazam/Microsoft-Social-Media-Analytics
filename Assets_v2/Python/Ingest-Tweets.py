@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]: Parameters
+# In[ ]:
 
 
 query = ""
@@ -130,11 +130,13 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
     # Check for tweets which have already been added
     search_query = 'select * from items where items.id="{0}"'.format(id_str)
     items = list(container.query_items(search_query,enable_cross_partition_query=True))
+
     dt2 = datetime.now()
     ts = int(time.mktime(dt2.timetuple()))
     at = dt2.strftime("%m/%d/%Y, %H:%M:%S %Z")
     tweet['inserted_to_CosmosDB_at'] = at
     tweet['inserted_to_CosmosDB_ts'] = ts
+
     new_tweet = True
     if len(items) > 0:
         # For existing tweets, assuming tweet text the same, so don't re-process
@@ -149,7 +151,7 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
     elif not(tweet["full_text"].lower().startswith("rt ")):
         print("New Tweet")
         new_tweet = True
-        tweet["originalid"] = tweet["id_str"]
+        tweet["originalid"] = tweet["id"]
         tweet["id"] = str(int(tweet["id_str"])+abs(hash(topic))) # artifically creating our own ID
         tweet["topickey"] = topic
         tweet["subtopic"] = subtopic
@@ -185,6 +187,7 @@ def build_entry(topic, status, query_search, container, query_language=None, tar
             named_entity_obj[query_language] = org_language_entities
         else:
             named_entities = get_ner(tweet_text) # list of objects where each object corresponds to an entity
+                 
         # add location information from azure maps
         named_entities_with_location = []
         for ent in named_entities:

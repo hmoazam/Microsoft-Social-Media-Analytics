@@ -159,26 +159,26 @@ else:
 
 %%spark
 val scala_dfNewsArticles = spark.sqlContext.sql ("select * from dfNewsArticles")
-scala_dfNewsArticles.write.synapsesql(DB_NAME+".stg.Articles", Constants.INTERNAL)
+scala_dfNewsArticles.write.synapsesql(DB_NAME+".stg.[Articles]", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfEntities = spark.sqlContext.sql ("select * from dfEntities")
-scala_dfEntities.write.synapsesql(DB_NAME+".stg.ArticlesEntities", Constants.INTERNAL)
+scala_dfEntities.write.synapsesql(DB_NAME+".stg.[ArticlesEntities]", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfSentiment = spark.sqlContext.sql ("select * from dfSentiment")
-scala_dfSentiment.write.synapsesql(DB_NAME+".stg.ArticlesSentiments", Constants.INTERNAL)
+scala_dfSentiment.write.synapsesql(DB_NAME+".stg.[ArticlesSentiments]", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfTranslations = spark.sqlContext.sql ("select * from dfTranslations")
-scala_dfTranslations.write.synapsesql(DB_NAME+".stg.ArticlesTranslations", Constants.INTERNAL)
+scala_dfTranslations.write.synapsesql(DB_NAME+".stg.[ArticlesTranslations]", Constants.INTERNAL)
 

@@ -17,7 +17,7 @@ and exploiting opportunities that the competitors may be missing.
 
 The Social Media Accelerator provides the skeleton for building a Social
 Media monitoring platform that helps collect data from social media
-sites and websites and evaluate that data to make business decisions.
+sites and news sites and evaluate that data to make business decisions.
 This document gives an overview of the solution architecture and
 provides all the necessary requirements and information to deploy the
 solution, as well as ideas and scenarios for extending the solution.
@@ -27,31 +27,31 @@ solution, as well as ideas and scenarios for extending the solution.
 The architecture of the Social Media Analytics accelerator is depicted
 below. The accelerator uses the following components:
 
--   Data Sources: twitter and news/web articles
+-   Data Sources: Twitter, news/web articles.
 
 -   Azure Synapse Analytics
 
     -   Synapse Pipelines: provides orchestration and automation for the
-        different jobs
+        different jobs.
 
     -   Synapse Spark Pool: is the engine to run the Python notebooks
         for querying data sources, transforming, enriching and storing
-        the data
+        the data.
 
-    -   Synapse SQL Pool: stores the data model
+    -   Synapse SQL Pool: stores the data model.
 
 -   Text Analytics: helps identify entities (persons, locations,
     organizations and events) and key phrases in text. It also performs
-    sentiment analysis on the text
+    sentiment analysis on the text.
 
 -   Translator: provides the ability to analyze data sources in
     different languages and present the outcome in both Arabic and
-    English
+    English.
 
--   Maps: helps precisely categorize user locations
+-   Maps: helps precisely categorize user locations based on the free-form field in the profiles.
 
 -   Power BI: a template is available to view the insights in multiple
-    report pages
+    report pages.
 
 ![auto generated](./media/image4.png)
 

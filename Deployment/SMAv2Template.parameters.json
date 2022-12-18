@@ -15,7 +15,7 @@
       "value": "XXXXXXXXXXXXXXXXX"
     },
     "company": {
-      "value": "xxx"
+      "value": "XXX"
     },
     "deploymentType": {
       "value": "prod"
@@ -26,7 +26,6 @@
     "sparkNodeSize": {
       "value": "Medium"
     },
-    
     "sqlAdministratorLogin": {
       "value": "sqladmin"
     },

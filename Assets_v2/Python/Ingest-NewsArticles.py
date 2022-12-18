@@ -2,7 +2,7 @@
 # coding: utf-8
 
 
-# In[ ]: 
+# In[ ]:
 
 
 import urllib.parse
@@ -26,7 +26,7 @@ from azure.core.credentials import AzureKeyCredential
 %run "common"
 
 
-# In[ ]: Parameters
+# In[ ]:
 
 
 query = ""
@@ -209,18 +209,9 @@ while True:
             article["title"]=article["title"][0].upper()+article["title"][1:]
             
             i=article["title"].find(' ', titleLength)
-            if article["title"]:
-                article["translations_title"], query_language = get_translation(article["title"], target_languages)
-            else:
-                article["translations_title"] = {k: "" for k in target_languages}
-            if article["description"]:
-                article["translations_description"], _ = get_translation(article["description"], target_languages)
-            else: 
-                article["translations_description"] = {k: "" for k in target_languages}
-            if article["content"]:
-                article["translations_content"], _ = get_translation(article["content"], target_languages)
-            else: 
-                article["translations_content"] = {k: "" for k in target_languages}
+            article["translations_title"], query_language = get_translation(article["title"], target_languages)
+            article["translations_description"], _ = get_translation(article["description"], target_languages)
+            article["translations_content"], _ = get_translation(article["content"], target_languages)
             if i==-1:
                 article["title"]=article["title"]
             else:
