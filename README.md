@@ -226,7 +226,7 @@ starting the triggers. You can also modify the triggers to your preferred freque
 
 ![Graphical user interface, application, table, Excel Description
 automatically
-generated](./media/image12.png)
+generated](./media/triggers.png)
 
 # Power BI Template
 
