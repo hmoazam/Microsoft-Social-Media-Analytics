@@ -114,6 +114,11 @@ TRUNCATE TABLE [dbo].[CountryCoordinates]
 
 	INSERT [dbo].[CountryCoordinates] ([COUNTRY_CODE], [COUNTRY_NAME], [Latitude], [Longitude]) VALUES (N'DE', N'Germany', N'51', N'9')
 
+<<<<<<< HEAD
+=======
+	INSERT [dbo].[CountryCoordinates] ([COUNTRY_CODE], [COUNTRY_NAME], [Latitude], [Longitude]) VALUES (N'COUNTRY_CODE', N'COUNTRY_NAME', N'Latitude', N'Longitude')
+
+>>>>>>> main
 	INSERT [dbo].[CountryCoordinates] ([COUNTRY_CODE], [COUNTRY_NAME], [Latitude], [Longitude]) VALUES (N'AQ', N'Antarctica', N'-90', N'0')
 
 	INSERT [dbo].[CountryCoordinates] ([COUNTRY_CODE], [COUNTRY_NAME], [Latitude], [Longitude]) VALUES (N'BM', N'Bermuda', N'32.33', N'-64.75')

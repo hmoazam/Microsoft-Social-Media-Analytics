@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
 # In[5]:
 
 
@@ -85,7 +84,6 @@ def get_key_phrases(inp_text):
       print("Encountered Translation exception. {}".format(err))
     return []
 
-
 # In[ ]:
 
 
@@ -113,7 +111,6 @@ def get_maps_response(inp):
 
 
 # In[ ]:
-
 
 def get_translation(inp_text, to_languages):
     """

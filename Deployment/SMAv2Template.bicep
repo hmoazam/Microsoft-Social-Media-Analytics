@@ -258,10 +258,13 @@ resource postDeploy 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
           name: 'MAPSKEY'
           value: AZURE_MAPS_KEY
         }
+<<<<<<< HEAD
         {
           name: 'SYNWORKSPACENAME'
           value: workspaceName
         }
+=======
+>>>>>>> main
         
   
     ]
@@ -288,7 +291,11 @@ resource postDeploy 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     az keyvault secret set --vault-name $keyVaultName  --name STORAGECONTAINERNAME  --value  $STORAGECONTAINERNAME
     az keyvault secret set --vault-name $keyVaultName  --name STORAGEKEY  --value  $STORAGEKEY
     az keyvault secret set --vault-name $keyVaultName  --name MAPSKEY  --value  $MAPSKEY
+<<<<<<< HEAD
     az keyvault secret set --vault-name $keyVaultName  --name SYNWORKSPACENAME --value $SYNWORKSPACENAME
+=======
+
+>>>>>>> main
     '''
     cleanupPreference: 'OnSuccess'
     retentionInterval: 'P1D'
@@ -527,6 +534,7 @@ resource cosmoscontainer2 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/co
   }
 
 
+<<<<<<< HEAD
   resource cosmoscontainer3 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-10-15' = {
     name: '${cosmosDbName}/${cosmosDbDatabaseName}/rss_articles'
     dependsOn: [
@@ -568,6 +576,8 @@ resource cosmoscontainer2 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/co
 }
 
 
+=======
+>>>>>>> main
   resource cosmosdatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-10-15' = {
     name: '${cosmosDbName}/${cosmosDbDatabaseName}'
     dependsOn: [
@@ -638,7 +648,11 @@ nodeSizeFamily: 'MemoryOptimized'
 nodeSize: sparkNodeSize
 autoScale: {
   'enabled': true
+<<<<<<< HEAD
   minNodeCount: 3
+=======
+  minNodeCount: 2
+>>>>>>> main
   maxNodeCount: 6
 }
 autoPause: {
