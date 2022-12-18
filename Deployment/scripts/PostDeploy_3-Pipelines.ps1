@@ -7,116 +7,17 @@ $body = @"
     "properties": {
         "activities": [
             {
-                "name": "Children - Islamic Upbringing 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "upbringing islam",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Islamic Upbringing",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
                 "name": "Cleanup Tweets",
                 "type": "SqlPoolStoredProcedure",
                 "dependsOn": [
                     {
-                        "activity": "Children - Islamic Upbringing 1",
+                        "activity": "Football",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     },
                     {
-                        "activity": "Parenting",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Child Development 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Child Development 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 3",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Children - Islamic Upbringing 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Child Development 3",
+                        "activity": "Football FIFA",
                         "dependencyConditions": [
                             "Completed"
                         ]
@@ -166,7 +67,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
@@ -251,7 +158,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
@@ -282,13 +195,13 @@ $body = @"
                 }
             },
             {
-                "name": "Parenting",
+                "name": "Football",
                 "type": "SynapseNotebook",
                 "dependsOn": [
                     {
                         "activity": "Wait1",
                         "dependencyConditions": [
-                            "Succeeded"
+                            "Completed"
                         ]
                     }
                 ],
@@ -307,7 +220,7 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "\"raising children\" OR \"raising kids\" OR parenting",
+                            "value": "football OR soccer",
                             "type": "string"
                         },
                         "users": {
@@ -315,11 +228,11 @@ $body = @"
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Children",
+                            "value": "Football",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Parenting",
+                            "value": "",
                             "type": "string"
                         },
                         "query_language": {
@@ -335,424 +248,19 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Child Development 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
                     },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood development",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Child Development",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
                     },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Child Development 2",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"early childhood development\"",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Child Development",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Screen Time 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"screen time\" kids",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Screen Time",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Childhood Obesity 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood obesity",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Childhood Obesity",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Screen Time 2",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"screen time\" children",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Screen Time",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Screen Time 3",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"screen time\" children \"mental health\"",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Screen Time",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Childhood Diabetes",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood diabetes",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Childhood Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
+                    "numExecutors": null
                 }
             },
             {
                 "name": "Wait1",
                 "type": "Wait",
                 "dependsOn": [
-                    {
-                        "activity": "Health - Childhood Obesity 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Childhood Diabetes",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
                     {
                         "activity": "Health - Diabetes",
                         "dependencyConditions": [
@@ -766,37 +274,7 @@ $body = @"
                         ]
                     },
                     {
-                        "activity": "Health - Obesity and Diabetes",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Obesity and Diabetes Qatar",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Diabetes Qatar 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Diabetes Qatar 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Covid Qatar",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Childhood Obesity 2",
+                        "activity": "Health - Covid",
                         "dependencyConditions": [
                             "Completed"
                         ]
@@ -810,14 +288,7 @@ $body = @"
             {
                 "name": "Health - Diabetes",
                 "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
+                "dependsOn": [],
                 "policy": {
                     "timeout": "7.00:00:00",
                     "retry": 0,
@@ -861,20 +332,19 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
                 "name": "Health - Diabetes Pregnancy",
                 "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
+                "dependsOn": [],
                 "policy": {
                     "timeout": "7.00:00:00",
                     "retry": 0,
@@ -918,324 +388,80 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Health - Obesity and Diabetes",
+                "name": "Football FIFA",
                 "type": "SynapseNotebook",
                 "dependsOn": [
                     {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "obesity diabetes",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Obesity & Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Obesity and Diabetes Qatar",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "obesity diabetes qatar",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Obesity & Diabetes Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Diabetes Qatar 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "(diabetes sidra qatar) OR (diabetes hmc qatar) OR #QatarDiabetesAssociation OR (Qatar Diabetes Association)",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Diabetes Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Diabetes Qatar 2",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "QatarDiabetes",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Diabetes Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Covid Qatar",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "(covid OR \"covid vaccination\" OR coronavirus) qatar",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Covid Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Wait 2",
-                "type": "Wait",
-                "dependsOn": [
-                    {
-                        "activity": "Events in Qatar - Horse Racing",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Events in Qatar - All Events",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Environment",
+                        "activity": "Wait1",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     }
                 ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
                 "userProperties": [],
                 "typeProperties": {
-                    "waitTimeInSeconds": 1
+                    "notebook": {
+                        "referenceName": "Ingest-Tweets",
+                        "type": "NotebookReference"
+                    },
+                    "parameters": {
+                        "query": {
+                            "value": "fifa OR (world cup 2022) or qatar2022",
+                            "type": "string"
+                        },
+                        "users": {
+                            "value": "",
+                            "type": "string"
+                        },
+                        "topic": {
+                            "value": "Football",
+                            "type": "string"
+                        },
+                        "subtopic": {
+                            "value": "FIFA",
+                            "type": "string"
+                        },
+                        "query_language": {
+                            "value": "All",
+                            "type": "string"
+                        },
+                        "target_languages": {
+                            "value": "English,Arabic",
+                            "type": "string"
+                        }
+                    },
+                    "snapshot": true,
+                    "sparkPool": {
+                        "referenceName": "$sparkName",
+                        "type": "BigDataPoolReference"
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Health - Childhood Obesity 2",
+                "name": "Health - Covid",
                 "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
@@ -1253,11 +479,11 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "",
+                            "value": "covid OR coronavirus OR covid19",
                             "type": "string"
                         },
                         "users": {
-                            "value": "ChildObesity_jn",
+                            "value": "",
                             "type": "string"
                         },
                         "topic": {
@@ -1265,7 +491,7 @@ $body = @"
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Childhood Obesity",
+                            "value": "Covid",
                             "type": "string"
                         },
                         "query_language": {
@@ -1281,262 +507,18 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Events in Qatar - Horse Racing",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
                     },
-                    "parameters": {
-                        "query": {
-                            "value": "\"Amir Sword Festival in Qatar\" OR (Katara International Arabian Horse Festival) OR \"Chi Al Shaqab\" OR (Longines Al Shaqab)",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Events in Qatar",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Horse Racing",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
                     },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Events in Qatar - All Events",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "QatarCalendar",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Events in Qatar",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "All Events",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Environment",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "QEERI_QA,AYCMQA",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Environment",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Children - Islamic Upbringing 2",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "MuslimUpbring",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Islamic Upbringing",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Child Development 3",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-Tweets",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "users": {
-                            "value": "ECDAction",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Child Development",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
+                    "numExecutors": null
                 }
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2022-03-04T16:14:09Z"
+        "lastPublishTime": "2022-12-14T10:53:58Z"
     },
     "type": "Microsoft.Synapse/workspaces/pipelines"
 }
@@ -1554,100 +536,17 @@ $body = @"
     "properties": {
         "activities": [
             {
-                "name": "Children - Islamic Upbringing 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "upbringing AND islam",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Islamic Upbringing",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
                 "name": "Cleanup Articles",
                 "type": "SqlPoolStoredProcedure",
                 "dependsOn": [
                     {
-                        "activity": "Children - Islamic Upbringing 1",
+                        "activity": "Football",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     },
                     {
-                        "activity": "Parenting",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Child Development 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Child Development 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 2",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Screen Time 3",
+                        "activity": "Football FIFA",
                         "dependencyConditions": [
                             "Completed"
                         ]
@@ -1697,7 +596,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
@@ -1728,16 +633,9 @@ $body = @"
                 }
             },
             {
-                "name": "Parenting",
+                "name": "Health - covid",
                 "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
+                "dependsOn": [],
                 "policy": {
                     "timeout": "7.00:00:00",
                     "retry": 0,
@@ -1753,219 +651,7 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "\"raising children\" OR \"raising kids\" OR parenting",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Parenting",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Child Development 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood AND development",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Child Development",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Child Development 2",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"early childhood development\"",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Child Development",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Screen Time 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "\"screen time\" AND kids",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Screen Time",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Childhood Obesity 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood AND obesity",
+                            "value": "covid OR coronavirus or covid19 or covid-19",
                             "type": "string"
                         },
                         "topic": {
@@ -1973,7 +659,7 @@ $body = @"
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Childhood Obesity",
+                            "value": "Covid",
                             "type": "string"
                         },
                         "query_language": {
@@ -1989,11 +675,17 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Screen Time 2",
+                "name": "Football",
                 "type": "SynapseNotebook",
                 "dependsOn": [
                     {
@@ -2018,15 +710,15 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "\"screen time\" AND children",
+                            "value": "football",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Children",
+                            "value": "Football",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Screen Time",
+                            "value": "",
                             "type": "string"
                         },
                         "query_language": {
@@ -2042,113 +734,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Screen Time 3",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
                     },
-                    "parameters": {
-                        "query": {
-                            "value": "\"screen time\" AND children AND \"mental health\"",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Children",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Screen Time",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
                     },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Childhood Diabetes",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "childhood AND diabetes",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Childhood Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
+                    "numExecutors": null
                 }
             },
             {
@@ -2156,49 +748,13 @@ $body = @"
                 "type": "Wait",
                 "dependsOn": [
                     {
-                        "activity": "Health - Childhood Obesity 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Childhood Diabetes",
+                        "activity": "Health - covid",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     },
                     {
                         "activity": "Health - Diabetes",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Diabetes Pregnancy",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Obesity and Diabetes",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Obesity and Diabetes Qatar",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Diabetes Qatar 1",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Covid Qatar",
                         "dependencyConditions": [
                             "Completed"
                         ]
@@ -2212,346 +768,6 @@ $body = @"
             {
                 "name": "Health - Diabetes",
                 "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "Diabetes",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Diabetes Pregnancy",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "diabetes AND pregnancy",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Obesity and Diabetes",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "obesity AND diabetes",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Obesity & Diabetes",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Obesity and Diabetes Qatar",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "obesity AND diabetes AND qatar",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Obesity & Diabetes Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Diabetes Qatar 1",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "(diabetes AND sidra AND qatar) OR (diabetes AND hmc AND qatar) OR (Qatar AND Diabetes AND Association)",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Diabetes Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Covid Qatar",
-                "type": "SynapseNotebook",
-                "dependsOn": [
-                    {
-                        "activity": "Wait 2",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-NewsArticles",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "query": {
-                            "value": "(covid OR \"covid vaccination\" OR coronavirus) AND qatar",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "Covid Qatar",
-                            "type": "string"
-                        },
-                        "query_language": {
-                            "value": "All",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "English,Arabic",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Wait 2",
-                "type": "Wait",
-                "dependsOn": [
-                    {
-                        "activity": "Events in Qatar - Horse Racing",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Environment Qatar",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    }
-                ],
-                "userProperties": [],
-                "typeProperties": {
-                    "waitTimeInSeconds": 1
-                }
-            },
-            {
-                "name": "Events in Qatar - Horse Racing",
-                "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
                     "timeout": "7.00:00:00",
@@ -2568,15 +784,15 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "\"Amir Sword Festival in Qatar\" OR (Katara International Arabian Horse Festival) OR \"Chi Al Shaqab\" OR (Longines Al Shaqab)",
+                            "value": "Diabetes",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Events in Qatar",
+                            "value": "Health",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Horse Racing",
+                            "value": "Diabetes",
                             "type": "string"
                         },
                         "query_language": {
@@ -2592,13 +808,26 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Environment Qatar",
+                "name": "Football FIFA",
                 "type": "SynapseNotebook",
-                "dependsOn": [],
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "7.00:00:00",
                     "retry": 0,
@@ -2614,15 +843,15 @@ $body = @"
                     },
                     "parameters": {
                         "query": {
-                            "value": "Qatar AND Environment AND climate AND NOT(football OR fifa OR world cup)",
+                            "value": "FIFA",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Environment",
+                            "value": "Football",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Qatar",
+                            "value": "FIFA",
                             "type": "string"
                         },
                         "query_language": {
@@ -2638,12 +867,18 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2022-03-07T09:16:39Z"
+        "lastPublishTime": "2022-12-13T22:59:24Z"
     },
     "type": "Microsoft.Synapse/workspaces/pipelines"
 }
@@ -2661,7 +896,7 @@ $body = @"
     "properties": {
         "activities": [
             {
-                "name": "Gulf Times - HMC",
+                "name": "Health - CDC",
                 "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
@@ -2679,7 +914,7 @@ $body = @"
                     },
                     "parameters": {
                         "feed_source": {
-                            "value": "https://www.gulf-times.com/Rss/Index",
+                            "value": "https://tools.cdc.gov/podcasts/feed.asp?feedid=183",
                             "type": "string"
                         },
                         "target_languages": {
@@ -2691,11 +926,11 @@ $body = @"
                             "type": "string"
                         },
                         "query_required": {
-                            "value": "hmc OR hamad hospital",
+                            "value": "",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Hospitals",
+                            "value": "US Gov",
                             "type": "string"
                         },
                         "subtopic": {
@@ -2707,11 +942,17 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Gulf Times - Sidra",
+                "name": "BBC Football",
                 "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
@@ -2729,7 +970,7 @@ $body = @"
                     },
                     "parameters": {
                         "feed_source": {
-                            "value": "https://www.gulf-times.com/Rss/Index",
+                            "value": "https://feeds.bbci.co.uk/sport/football/rss.xml# ",
                             "type": "string"
                         },
                         "target_languages": {
@@ -2741,15 +982,15 @@ $body = @"
                             "type": "string"
                         },
                         "query_required": {
-                            "value": "sidra",
+                            "value": "fifa",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Hospitals",
+                            "value": "Football",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "Sidra",
+                            "value": "FIFA",
                             "type": "string"
                         }
                     },
@@ -2757,11 +998,17 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
-                "name": "Parenting - Psychology Today",
+                "name": "The Independent Football",
                 "type": "SynapseNotebook",
                 "dependsOn": [],
                 "policy": {
@@ -2779,7 +1026,7 @@ $body = @"
                     },
                     "parameters": {
                         "feed_source": {
-                            "value": "https://www.psychologytoday.com/us/blog/singletons/feed",
+                            "value": "https://www.independent.co.uk/sport/football/rss",
                             "type": "string"
                         },
                         "target_languages": {
@@ -2791,15 +1038,15 @@ $body = @"
                             "type": "string"
                         },
                         "query_required": {
-                            "value": "",
+                            "value": "fifa",
                             "type": "string"
                         },
                         "topic": {
-                            "value": "Parenting",
+                            "value": "Football",
                             "type": "string"
                         },
                         "subtopic": {
-                            "value": "",
+                            "value": "FIFA",
                             "type": "string"
                         }
                     },
@@ -2807,107 +1054,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Parenting - Hand in Hand Parenting",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-RSS-Feeds",
-                        "type": "NotebookReference"
                     },
-                    "parameters": {
-                        "feed_source": {
-                            "value": "https://www.handinhandparenting.org/feed/",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        },
-                        "query_optional": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "query_required": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Parenting",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "",
-                            "type": "string"
-                        }
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
                     },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
-                }
-            },
-            {
-                "name": "Health - Health Magazine UAE",
-                "type": "SynapseNotebook",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "7.00:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "notebook": {
-                        "referenceName": "Ingest-RSS-Feeds",
-                        "type": "NotebookReference"
-                    },
-                    "parameters": {
-                        "feed_source": {
-                            "value": "http://www.healthmagazine.ae/blog/feed/",
-                            "type": "string"
-                        },
-                        "target_languages": {
-                            "value": "Arabic,English",
-                            "type": "string"
-                        },
-                        "query_optional": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "query_required": {
-                            "value": "",
-                            "type": "string"
-                        },
-                        "topic": {
-                            "value": "Health",
-                            "type": "string"
-                        },
-                        "subtopic": {
-                            "value": "",
-                            "type": "string"
-                        }
-                    },
-                    "snapshot": true,
-                    "sparkPool": {
-                        "referenceName": "$sparkName",
-                        "type": "BigDataPoolReference"
-                    }
+                    "numExecutors": null
                 }
             },
             {
@@ -2957,7 +1110,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
@@ -2965,31 +1124,19 @@ $body = @"
                 "type": "SqlPoolStoredProcedure",
                 "dependsOn": [
                     {
-                        "activity": "Gulf Times - HMC",
+                        "activity": "Health - CDC",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     },
                     {
-                        "activity": "Gulf Times - Sidra",
+                        "activity": "BBC Football",
                         "dependencyConditions": [
                             "Completed"
                         ]
                     },
                     {
-                        "activity": "Parenting - Psychology Today",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Parenting - Hand in Hand Parenting",
-                        "dependencyConditions": [
-                            "Completed"
-                        ]
-                    },
-                    {
-                        "activity": "Health - Health Magazine UAE",
+                        "activity": "The Independent Football",
                         "dependencyConditions": [
                             "Completed"
                         ]
@@ -3045,7 +1192,13 @@ $body = @"
                     "sparkPool": {
                         "referenceName": "$sparkName",
                         "type": "BigDataPoolReference"
-                    }
+                    },
+                    "conf": {
+                        "spark.dynamicAllocation.enabled": null,
+                        "spark.dynamicAllocation.minExecutors": null,
+                        "spark.dynamicAllocation.maxExecutors": null
+                    },
+                    "numExecutors": null
                 }
             },
             {
@@ -3077,18 +1230,17 @@ $body = @"
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2022-03-06T12:08:49Z"
+        "lastPublishTime": "2022-12-13T22:59:26Z"
     },
     "type": "Microsoft.Synapse/workspaces/pipelines"
 }
-
 "@ 
 
 $uri = "https://$workspaceName.dev.azuresynapse.net/pipelines/$n3`?api-version=2020-12-01"
 $global:results += Invoke-WebRequest -Uri $uri -Method Put -Body $body  -TimeoutSec 90 -Headers $headersSynapse -ContentType "application/json"
 
 # Triggers
-$t1="Trigger Once A Day - Tweets"
+$t1="Trigger x6 A Day - Tweets"
 $body = @"
 {
     "name": "$t1",
@@ -3106,17 +1258,10 @@ $body = @"
         "type": "ScheduleTrigger",
         "typeProperties": {
             "recurrence": {
-                "frequency": "Day",
-                "interval": 1,
-                "startTime": "2022-03-04T16:05:00",
-                "timeZone": "Arab Standard Time",
-                "schedule": {
-                    "minutes": [
-                        0
-                    ],
-                    "hours": [
-                        20
-                    ]
+                "frequency": "Hour",
+                "interval": 4,
+                "startTime": "2022-12-17T13:22:00Z",
+                "timeZone": "UTC"
                 }
             }
         }

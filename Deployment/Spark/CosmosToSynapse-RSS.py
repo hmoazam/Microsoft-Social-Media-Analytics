@@ -187,26 +187,26 @@ df_rss_articles_translations.createOrReplaceTempView("df_rss_articles_translatio
 
 %%spark
 val scala_df_articles = spark.sqlContext.sql ("select * from df_rss_articles")
-scala_df_articles.write.synapsesql(DB_NAME+".stg.[RSSArticles]", Constants.INTERNAL)
+scala_df_articles.write.synapsesql(DB_NAME+".stg.RSSArticles", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_df_entities = spark.sqlContext.sql ("select * from df_rss_articles_entities")
-scala_df_entities.write.synapsesql(DB_NAME+".stg.[RSSArticlesEntities]", Constants.INTERNAL)
+scala_df_entities.write.synapsesql(DB_NAME+".stg.RSSArticlesEntities", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_df_sentiments = spark.sqlContext.sql ("select * from df_rss_articles_sentiments")
-scala_df_sentiments.write.synapsesql(DB_NAME+".stg.[RSSArticlesSentiments]", Constants.INTERNAL)
+scala_df_sentiments.write.synapsesql(DB_NAME+".stg.RSSArticlesSentiments", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_df_translations = spark.sqlContext.sql ("select * from df_rss_articles_translations")
-scala_df_translations.write.synapsesql(DB_NAME+".stg.[RSSArticlesTranslations]", Constants.INTERNAL)
+scala_df_translations.write.synapsesql(DB_NAME+".stg.RSSArticlesTranslations", Constants.INTERNAL)
 

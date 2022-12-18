@@ -283,11 +283,8 @@ def process_feed(news_feed, container, target_languages, query_optional, query_r
                         article_json['sentiment'] = ""
                         article_json['sentiment_score'] = 0 
                         matched = True
-                    # else: 
-                    #     article_json["topic"] = ""
-                    #     article_json["subtopic"] = ""
-
-                elif field == "published_parsed":
+                        
+                elif field == "published_parsed" and value:
                     published_ts = int(time.mktime(value))
                     article_json['published_ts'] = published_ts
                     article_json['published_ts_str'] = (datetime.fromtimestamp(published_ts)).strftime("%m/%d/%Y, %H:%M:%S %Z")
