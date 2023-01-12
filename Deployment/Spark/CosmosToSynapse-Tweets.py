@@ -234,54 +234,54 @@ else:
 
 %%spark
 val scala_dftweets = spark.sqlContext.sql ("select * from dftweets")
-scala_dftweets.write.synapsesql(DB_NAME+".stg.[Tweets]", Constants.INTERNAL)
+scala_dftweets.write.synapsesql(DB_NAME+".stg.Tweets", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfhashtags = spark.sqlContext.sql ("select * from dfhashtags")
-scala_dfhashtags.write.synapsesql(DB_NAME+".stg.[Hashtags]", Constants.INTERNAL)
+scala_dfhashtags.write.synapsesql(DB_NAME+".stg.Hashtags", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfhandles = spark.sqlContext.sql ("select * from dfhandles")
-scala_dfhandles.write.synapsesql(DB_NAME+".stg.[Handles]", Constants.INTERNAL)
+scala_dfhandles.write.synapsesql(DB_NAME+".stg.Handles", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfmedia = spark.sqlContext.sql ("select * from dfmedia")
-scala_dfmedia.write.synapsesql(DB_NAME+".stg.[TweetMedia]", Constants.INTERNAL)
+scala_dfmedia.write.synapsesql(DB_NAME+".stg.TweetMedia", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfSentiment = spark.sqlContext.sql ("select * from dfSentiment")
-scala_dfSentiment.write.synapsesql(DB_NAME+".stg.[Sentiments]", Constants.INTERNAL)
+scala_dfSentiment.write.synapsesql(DB_NAME+".stg.Sentiments", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfURLs = spark.sqlContext.sql ("select * from dfURLs")
-scala_dfURLs.write.synapsesql(DB_NAME+".stg.[TweetURLs]", Constants.INTERNAL)
+scala_dfURLs.write.synapsesql(DB_NAME+".stg.TweetURLs", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfTranslations = spark.sqlContext.sql ("select * from dfTranslations")
-scala_dfTranslations.write.synapsesql(DB_NAME+".stg.[Translations]", Constants.INTERNAL)
+scala_dfTranslations.write.synapsesql(DB_NAME+".stg.Translations", Constants.INTERNAL)
 
 
 # In[ ]:
 
 %%spark
 val scala_dfEntities = spark.sqlContext.sql ("select * from dfEntities")
-scala_dfEntities.write.synapsesql(DB_NAME+".stg.[TweetsEntities]", Constants.INTERNAL)
+scala_dfEntities.write.synapsesql(DB_NAME+".stg.TweetsEntities", Constants.INTERNAL)
 

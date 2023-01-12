@@ -72,11 +72,13 @@ datetime_now = datetime.now() # UTC time
 
 
 for article in rss_container_client.query_items(query, enable_cross_partition_query=True):
-    
-    published_at = parse(article["published_ts_str"]) # converts to datetime? # UTC +3 (local time)
+    try:
+        published_at = parse(article["published_ts_str"]) # converts to datetime? # UTC +3 (local time)
+    except:
+        # some articles don't have a publish date
+        published_at = parse(article['inserted_to_CosmosDB_at']) # use the cosmos insertion time instead. Time zone UTC.
     inserted_to_cosmos_ts = datetime.fromtimestamp(article['inserted_to_CosmosDB_ts']) # UTC
     inserted_to_cosmos_ts_int = article['inserted_to_CosmosDB_ts']
-
     # originals
     id_ = article["id"]
     title = article["title"] 
@@ -84,37 +86,31 @@ for article in rss_container_client.query_items(query, enable_cross_partition_qu
     source = article["news_feed"]
     url = article["link"]
     img_url = article["img"]
-
     # processed objects
     title_translated = article["title_translated"]
     summary_translated = article["summary_translations"]
     summary_entities = article["summary_ner"]
-
     sentiment = article["sentiment"]
     sentiment_score = float(article["sentiment_score"])
-
     topic = article["topic"]
     subtopic = article["subtopic"]
-
     # populate RSSArticles
     lst_articles.append([id_, source, title, summary, url, img_url, published_at, datetime_now, inserted_to_cosmos_ts, inserted_to_cosmos_ts_int, topic, subtopic])
-
     # populate RSSArticlesEntities
     langs = summary_entities.keys()
     for lang in langs: 
         entities = summary_entities[lang]
         for ent in entities: 
             lst_entities.append([id_, lang, ent["category"], ent["subcategory"], ent["text"], ent["confidence_score"], published_at])
-    
     # populate RSSArticlesSentiments
     lst_sentiment.append([id_, sentiment, sentiment_score, published_at])
-   
     # populate RSSArticlesTranslations
-    langs = title_translated.keys()
+    langs = summary_translated.keys()
     for lang in langs: 
         title_ = title_translated[lang]
         summary_ = summary_translated[lang]
         lst_translations.append([id_, lang, title_, summary_, published_at])
+
 
 
 # In[ ]:
